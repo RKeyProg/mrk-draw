@@ -1,0 +1,99 @@
+@import url("https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;500;600;700&display=swap");
+@import "../node_modules/normalize.css/normalize.css";
+@import "./mixins.scss";
+
+html {
+  font-size: 14px;
+
+  @include desktop {
+    font-size: 13px;
+  }
+
+  @include tablets {
+    font-size: 12px;
+  }
+}
+
+::selection {
+  background: #bdbdbd;
+}
+
+body,
+html {
+  height: 100vh;
+}
+
+body {
+  position: relative;
+  font-family: "Open Sans", sans-serif;
+  line-height: 1.42em;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  color: $text-color_light;
+  overflow: hidden;
+}
+
+.wrapper {
+  overflow: hidden;
+  min-height: 100%;
+  position: relative;
+  z-index: 5;
+}
+
+button {
+  border: 0;
+  cursor: pointer;
+  background: transparent;
+  padding: 0;
+
+  &:focus {
+    outline: none;
+  }
+}
+
+* {
+  box-sizing: border-box;
+}
+
+ul {
+  padding: 0;
+  margin: 0;
+  list-style: none;
+  display: flex;
+  align-items: center;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-weight: normal;
+  margin: 0;
+}
+
+p {
+  margin: 0;
+  padding: 0;
+}
+
+td {
+  padding: 0;
+}
+
+a {
+  text-decoration: none;
+  color: inherit;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+img,
+svg {
+  display: block;
+  max-width: 100%;
+  width: 100%;
+  max-height: 100%;
+  object-fit: cover;
+}
