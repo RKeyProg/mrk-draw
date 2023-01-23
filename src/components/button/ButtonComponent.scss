@@ -1,0 +1,18 @@
+.button {
+  width: 100%;
+  height: 50px;
+  padding: 13px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: #f1554c;
+  border-radius: 100px;
+  color: #fff;
+  font-weight: 700;
+  font-size: 14px;
+  transition: background .3s ease;
+
+  &:hover {
+    background: #E74339;
+  }
+}

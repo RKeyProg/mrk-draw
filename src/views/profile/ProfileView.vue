@@ -1,6 +1,5 @@
 <template lang="pug">
-.home
-  img(src="./../../assets/logo.svg")
+.home profile
 </template>
 
 <script>

@@ -1,0 +1,18 @@
+.input-component {
+  width: 100%;
+}
+
+.input {
+  width: 100%;
+  padding: 13px 21px;
+  border-radius: 100px;
+  font-weight: 700;
+  font-size: 14px;
+  line-height: 170%;
+  color: #32343F;
+  outline: none;
+
+  &::placeholder {
+    color: #989FB7;
+  }
+}
