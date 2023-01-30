@@ -35,6 +35,7 @@ export default {
   border-radius: 20px 0px 0px 20px;
   overflow: hidden;
   padding: 35px;
+  padding-top: 20px;
 
   &::before {
     content: "";

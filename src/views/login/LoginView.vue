@@ -3,8 +3,8 @@
   h4.login__title Вход в аккаунт
   form.authorization
     .authorization__inputs
-      app-input.authorization__input(title="Логин")
-      app-input.authorization__input(title="Пароль")
+      app-input.authorization__input(placeholder="Логин")
+      app-input.authorization__input(placeholder="Пароль")
     appBtn.authorization__btn Войти
 </template>
 

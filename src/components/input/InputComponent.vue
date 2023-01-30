@@ -1,29 +1,25 @@
 <template lang="pug">
 .input-component
-  label
-    input(
-      :placeholder="title",
-      v-bind="$attrs",
-      :type="fieldType",
-      :value="value",
-      @input="$emit('input', $event.target.value)"
-    ).input
+  input.input(
+    v-if="type === 'text'",
+    v-bind="$attrs",
+    :type="type",
+    @input="$emit('input', $event.target.value)"
+  )
+  input.input(
+    v-else-if="type === 'file'",
+    v-bind="$attrs",
+    :type="type",
+  )
 </template>
 
 <script>
 export default {
+  name: "InputComponent",
   props: {
-    title: {
-      type: String,
-      default: "",
-    },
-    fieldType: {
+    type: {
       type: String,
       default: "text",
-    },
-    value: {
-      type: String,
-      default: "",
     },
   },
 };

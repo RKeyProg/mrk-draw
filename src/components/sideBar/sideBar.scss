@@ -1,5 +1,5 @@
 .side-bar__container {
-  padding: 50px 0;
+  padding: 40px 0;
   width: 100px;
 }
 
@@ -13,9 +13,16 @@
 
 .side-bar__logo {
   width: 40px;
+  height: 45px;
 }
 
-.side-bar__user {
-  width: 30px;
+.side-bar__exit {
+  width: 20px;
+  height: 20px;
+}
+
+.nav__item {
+  width: 25px;
+  height: 25px;
   fill: #989FB7;
 }
