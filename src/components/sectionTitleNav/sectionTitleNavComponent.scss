@@ -24,26 +24,31 @@
 
     &::after {
       width: 110%;
+      left: -5%;
     }
   }
 
   &:hover {
     color: #f1554c;
 
-    &::after {
+    &:hover:after {
       width: 110%;
+      left: -5%;
     }
   }
 
-  &::after {
+  &:after {
     content: "";
-    position: absolute;
+    pointer-events: none;
     top: 120%;
-    left: -5%;
+    left: 55%;
+    position: absolute;
     width: 0%;
-    height: 5px;
-    background: #f1554c;
+    height: 4px;
+    background-color: #F1554C;
+    transition-timing-function: cubic-bezier(0.25, 0.8, 0.25, 1);
+    transition-duration: 400ms;
+    transition-property: width, left;
     border-radius: 2px;
-    transition: width 0.5s ease;
   }
 }

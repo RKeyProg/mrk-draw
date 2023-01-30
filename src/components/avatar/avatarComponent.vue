@@ -3,12 +3,15 @@
   .photo(v-if="photo")
     img.photo__img
   .photo(v-else)
-    svg.photo__icon(viewBox="0 0 512.001 512.001", preserveAspectRatio="none")
-      use(xlink:href="../../assets/icons/camera.svg#camera")
+    app-icon(name="camera").photo__icon
 </template>
 
 <script>
+import appIcon from "../icon";
 export default {
+  components: {
+    appIcon,
+  },
   props: {
     photo: {
       type: String,

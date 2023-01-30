@@ -1,7 +1,7 @@
 <template lang="pug">
 .input-component
   input.input(
-    v-if="type === 'text'",
+    v-if="type !== 'file'",
     v-bind="$attrs",
     :type="type",
     @input="$emit('input', $event.target.value)"

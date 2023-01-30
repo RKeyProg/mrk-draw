@@ -2,14 +2,18 @@
 .side-bar__container
   section.side-bar
     router-link.side-bar__logo(to="/")
-      appIcon(name="logo").side-bar__logo
-    nav
-      ul
-        li.nav__item(v-for="item in navList", :key="item.id")
-          router-link.side-bar__exit(to="/login")
-            appIcon(name="home")
+      appIcon.side-bar__logo(name="logo")
+    nav.side-bar__nav.nav
+      ul.nav__menu
+        li(
+          v-for="item in navList",
+          :key="item.id",
+          :class="['nav__item', { active: item.isActive }]"
+        )
+          router-link(to="/login")
+            appIcon.nav__icon(:name="item.name")
     router-link.side-bar__exit(to="/login")
-      appIcon(name="exit").side-bar__exit 
+      appIcon.side-bar__exit(name="exit") 
 </template>
 
 <script>
@@ -23,8 +27,18 @@ export default {
       navList: [
         {
           id: 1,
-          viewBox: "0 0 512.001 512.001",
-          path: "user",
+          name: "home",
+          isActive: true,
+        },
+        {
+          id: 2,
+          name: "contacts",
+          isActive: false,
+        },
+        {
+          id: 3,
+          name: "user",
+          isActive: false,
         },
       ],
     };
