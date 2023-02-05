@@ -2,25 +2,25 @@
 .side-bar__container
   section.side-bar
     router-link.side-bar__logo(to="/")
-      appIcon.side-bar__logo(name="logo")
+      base-icon.side-bar__logo(name="logo")
     nav.side-bar__nav.nav
       ul.nav__menu
         li(
           v-for="item in navList",
           :key="item.id",
-          :class="['nav__item', { active: item.isActive }]"
+          :class="['nav__item', { active: item.path === this.$route.path }]"
         )
-          router-link(to="/login")
-            appIcon.nav__icon(:name="item.name")
+          router-link(:to="item.path")
+            base-icon.nav__icon(:name="item.name")
     router-link.side-bar__exit(to="/login")
-      appIcon.side-bar__exit(name="exit") 
+      base-icon.side-bar__exit(name="exit") 
 </template>
 
 <script>
-import appIcon from "../icon";
+import BaseIcon from "../BaseIcon";
 export default {
   components: {
-    appIcon,
+    BaseIcon,
   },
   data() {
     return {
@@ -28,17 +28,17 @@ export default {
         {
           id: 1,
           name: "home",
-          isActive: true,
+          path: "/",
         },
         {
           id: 2,
           name: "contacts",
-          isActive: false,
+          path: "/login",
         },
         {
           id: 3,
           name: "user",
-          isActive: false,
+          path: "/profile",
         },
       ],
     };
@@ -46,4 +46,4 @@ export default {
 };
 </script>
 
-<style lang="scss" src="./sideBar.scss"></style>
+<style lang="scss" scoped src="./sideBar.scss"></style>

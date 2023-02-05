@@ -3,14 +3,14 @@
   .photo(v-if="photo")
     img.photo__img
   .photo(v-else)
-    app-icon(name="camera").photo__icon
+    base-icon.photo__icon(name="camera")
 </template>
 
 <script>
-import appIcon from "../icon";
+import BaseIcon from "../BaseIcon";
 export default {
   components: {
-    appIcon,
+    BaseIcon,
   },
   props: {
     photo: {
@@ -21,4 +21,4 @@ export default {
 };
 </script>
 
-<style lang="scss" scoped src="./avatarComponent.scss"></style>
+<style lang="scss" scoped src="./BaseAvatar.scss"></style>

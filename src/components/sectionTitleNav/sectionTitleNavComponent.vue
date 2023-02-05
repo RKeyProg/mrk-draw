@@ -3,37 +3,37 @@
   nav
     ul.navigation__list
       li(
-        v-for="item in navList",
+        v-for="item in navigation",
         :key="item.id",
         :class="['navigation__item', { active: item.active }]"
       ) 
-        a {{ item.title }}
+        base-button(transparent, @handleClick="changePage(item)") {{ item.title }}
 </template>
 
 <script>
+import BaseButton from "../BaseButton";
+import { mapState, mapActions } from "vuex";
+
 export default {
-  data() {
-    return {
-      navList: [
-        {
-          id: 1,
-          title: "Мой профиль",
-          active: true,
-        },
-        {
-          id: 1,
-          title: "Мои проекты",
-          active: false,
-        },
-        {
-          id: 1,
-          title: "Приватность",
-          active: false,
-        },
-      ],
-    };
+  components: {
+    BaseButton,
+  },
+  methods: {
+    ...mapActions(["setCurrentComponent"]),
+    changePage(currentComponent) {
+      currentComponent.active = true;
+      this.setCurrentComponent(currentComponent);
+      console.log(currentComponent);
+    },
+  },
+  computed: {
+    ...mapState({
+      navigation: function (state) {
+        return state[this.$route.name].componentNavigation;
+      },
+    }),
   },
 };
 </script>
 
-<style lang="scss" src="./sectionTitleNavComponent.scss"></style>
+<style lang="scss" scoped src="./sectionTitleNavComponent.scss"></style>

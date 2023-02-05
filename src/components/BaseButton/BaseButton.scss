@@ -1,0 +1,49 @@
+.btn {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  transition: all 0.3s ease;
+  background: none;
+
+  &__default {
+    padding: 12px;
+    background: #f1554c;
+    border-radius: 100px;
+    color: #fff;
+    font-weight: 700;
+    font-size: inherit;
+    line-height: 170%;
+
+    &:hover {
+      background: #e74339;
+    }
+  }
+
+  &_bg_transparent {
+    padding: 0;
+    background: none;
+    color: inherit;
+
+    &:hover {
+      background: none;
+      color: #f1554c;
+    }
+  }
+
+  &_type_icon {
+    width: 35px;
+    height: 35px;
+    fill: #32343f;
+
+    &:hover {
+      fill: #f1554c;
+    }
+  }
+}
+
+.btn__icon {
+  width: 60%;
+  height: 60%;
+  fill: inherit;
+}

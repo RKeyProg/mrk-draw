@@ -1,13 +1,12 @@
 import { createRouter, createWebHistory } from "vue-router";
-import ProfileView from "../views/profile";
 import sideBar from "../components/sideBar";
 
 const routes = [
   {
     path: "/",
-    name: "profile",
+    name: "main",
     components: {
-      default: ProfileView,
+      default: () => import("../views/main"),
       sideBar: sideBar,
     },
   },
@@ -16,6 +15,14 @@ const routes = [
     name: "login",
     components: {
       default: () => import("../views/login"),
+    },
+  },
+  {
+    path: "/profile",
+    name: "profile",
+    components: {
+      default: () => import("../views/profile"),
+      sideBar: sideBar,
     },
   },
 ];

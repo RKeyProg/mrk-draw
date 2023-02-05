@@ -1,0 +1,53 @@
+.project-item {
+  width: 100%;
+  display: grid;
+  grid-template-columns: 1.7fr 1fr 1fr;
+  align-items: center;
+  font-weight: 700;
+  font-size: 12px;
+  line-height: 20px;
+  letter-spacing: 0.1em;
+  color: #32343f;
+  position: relative;
+
+  &:hover {
+    & .project__remove {
+      width: 35px;
+      left: -35px;
+    }
+  }
+}
+
+.project__file {
+  display: flex;
+  align-items: center;
+}
+
+.project__preview {
+  width: 35px;
+  height: 35px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: #d9d9d9;
+  border-radius: 5px;
+  margin-right: 20px;
+}
+
+.project__icon {
+  width: 60%;
+  height: 60%;
+}
+
+.project__last-active {
+  justify-self: flex-end;
+}
+
+.project__remove {
+  position: absolute;
+  left: 0;
+  width: 0;
+  overflow: hidden;
+  transition: all 0.5s ease;
+  z-index: 1;
+}

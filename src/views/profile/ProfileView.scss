@@ -1,59 +1,8 @@
 .section__healine {
-  margin-bottom: 95px;
+  margin-bottom: 65px;
 }
 
-.profile__content {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-}
-
-.profile__photo {
-  position: relative;
-  margin-bottom: 95px;
-
-  & input {
-    display: none;
-  }
-
-  &:hover {
-    cursor: pointer;
-  }
-
-  &::before {
-    content: '';
-    position: absolute;
-    right: 0;
-    width: 40px;
-    height: 40px;
-    border-radius: 50%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    background: url("../../assets/icons/upload.svg") center center no-repeat;
-    background-size: 20px;
-    background-color: #0B2361;
-    transform: rotate(-90deg);
-  }
-}
-
-.profile__rows {
-  width: 850px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 35px;
-
-  &:last-child {
-    margin-bottom: 0;
-  }
-}
-
-.profile__input {
-  margin-right: 50px;
-
-  &:last-child {
-    margin-right: 0;
-  }
+.profile__container {
+  width: 100%;
+  padding: 0 35px;
 }

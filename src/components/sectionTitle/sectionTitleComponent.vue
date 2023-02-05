@@ -1,16 +1,22 @@
 <template lang="pug">
 .section-title
-  h2 Мой профиль
-  app-section-nav
+  h2 {{ title }}
+  section-title-nav
 </template>
 
 <script>
-import appSectionNav from "../sectionTitleNav";
+import sectionTitleNav from "../sectionTitleNav";
 
 export default {
   components: {
-    appSectionNav,
+    sectionTitleNav,
+  },
+  props: {
+    title: {
+      type: String,
+      default: "Untitled",
+    },
   },
 };
 </script>
-<style lang="scss" src="./sectionTitleComponent.scss"></style>
+<style lang="scss" scoped src="./sectionTitleComponent.scss"></style>
