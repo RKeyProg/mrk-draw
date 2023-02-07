@@ -1,34 +1,29 @@
 <template lang="pug">
-.main 
-  section-title(title="Главная", :navigation="navList")
+.main
+  .section__healine
+    section-title(title="Главная")
+  .section__container
+    component(:is="currentComponent")
 </template>
 
 <script>
-import sectionTitle from "./../../components/sectionTitle";
+import sectionTitle from "../../components/sectionTitle";
+import mainProjects from "../../components/mainProjects";
+import mainSettings from "../../components/mainSettings";
+import mainTrash from "../../components/mainTrash";
+import { mapState } from "vuex";
+
 export default {
   components: {
     sectionTitle,
+    mainProjects,
+    mainSettings,
+    mainTrash,
   },
-  data() {
-    return {
-      navList: [
-        {
-          id: 1,
-          title: "Проекты",
-          active: true,
-        },
-        {
-          id: 2,
-          title: "Настройки",
-          active: false,
-        },
-        {
-          id: 2,
-          title: "Корзина",
-          active: false,
-        },
-      ],
-    };
+  computed: {
+    ...mapState({
+      currentComponent: (state) => state.main.currentComponent,
+    }),
   },
 };
 </script>

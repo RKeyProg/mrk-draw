@@ -7,7 +7,10 @@
         :key="item.id",
         :class="['navigation__item', { active: item.active }]"
       ) 
-        base-button(transparent, @handleClick="changePage(item)") {{ item.title }}
+        base-button(
+          customType="transparent",
+          @click="changeCurrentComponent(item)"
+        ) {{ item.title }}
 </template>
 
 <script>
@@ -19,11 +22,21 @@ export default {
     BaseButton,
   },
   methods: {
-    ...mapActions(["setCurrentComponent"]),
-    changePage(currentComponent) {
-      currentComponent.active = true;
-      this.setCurrentComponent(currentComponent);
-      console.log(currentComponent);
+    ...mapActions({
+      setMainCurrentComponent: "main/setCurrentComponent",
+      setProfileCurrentComponent: "profile/setCurrentComponent",
+    }),
+    changeCurrentComponent(currentComponent) {
+      switch (this.$route.name) {
+        case "profile":
+          this.setProfileCurrentComponent(currentComponent);
+          break;
+        case "main":
+          this.setMainCurrentComponent(currentComponent);
+          break;
+        default:
+          break;
+      }
     },
   },
   computed: {

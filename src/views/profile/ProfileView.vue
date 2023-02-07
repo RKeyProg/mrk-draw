@@ -2,14 +2,14 @@
 .profile
   .section__healine
     section-title(title="Мой профиль")
-  .profile__container
+  .section__container
     component(:is="currentComponent")
 </template>
 
 <script>
 import sectionTitle from "./../../components/sectionTitle";
-import profileUser from "./../../components/profileUserComponent";
-import profilePrivacy from "./../../components/profilePrivacyComponent";
+import profileUser from "./../../components/profileUser";
+import profilePrivacy from "./../../components/profilePrivacy";
 import { mapState } from "vuex";
 
 export default {
@@ -26,5 +26,3 @@ export default {
   },
 };
 </script>
-
-<style lang="scss" scoped src="./ProfileView.scss"></style>

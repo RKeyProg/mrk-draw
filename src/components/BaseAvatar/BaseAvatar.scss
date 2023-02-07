@@ -1,20 +1,21 @@
 .avatar-component {
-  width: 130px;
-  height: 130px;
+  width: 100%;
+  height: 100%;
+  background: #e9ecf4;
 }
 
 .photo {
   width: 100%;
   height: 100%;
-  border-radius: 50%;
-  background: #E9ECF4;
   display: flex;
   justify-content: center;
   align-items: center;
+  background-size: cover;
 
   &__icon {
+    pointer-events: none;
     width: 50%;
     height: 50%;
-    fill: #0B2361;
+    fill: #0b2361;
   }
 }

@@ -3,32 +3,26 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  transition: all 0.3s ease;
+  font-size: inherit;
+  font-weight: inherit;
+  letter-spacing: inherit;
+  color: inherit;
   background: none;
+  transition: all 0.3s ease;
 
-  &__default {
-    padding: 12px;
+  &_type_fill {
+    padding: 13px 25px;
     background: #f1554c;
-    border-radius: 100px;
-    color: #fff;
-    font-weight: 700;
-    font-size: inherit;
-    line-height: 170%;
+    border-radius: 50px;
 
     &:hover {
       background: #e74339;
     }
   }
 
-  &_bg_transparent {
-    padding: 0;
+  &_type_transparent:hover {
     background: none;
-    color: inherit;
-
-    &:hover {
-      background: none;
-      color: #f1554c;
-    }
+    color: #f1554c;
   }
 
   &_type_icon {

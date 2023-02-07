@@ -7,7 +7,12 @@
     :value="modelValue",
     @input="$emit('update:modelValue', $event.target.value)"
   )
-  input.input(v-else-if="type === 'file'", v-bind="$attrs", :type="type")
+  input.input(
+    v-else-if="type === 'file'",
+    v-bind="$attrs",
+    :type="type",
+    @change="$emit('handleChange', $event.target.files[0])"
+  )
 </template>
 
 <script>

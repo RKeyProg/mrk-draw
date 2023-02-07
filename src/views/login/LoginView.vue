@@ -13,7 +13,7 @@
         v-model="user.password",
         type="password"
       )
-    base-button.authorization__btn(type="text") Войти
+    base-button.authorization__btn(customType="fill") Войти
 </template>
 
 <script>

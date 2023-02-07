@@ -1,20 +1,23 @@
 <template lang="pug">
 .btn-component
-  button.btn.btn_type_icon(
-    v-if="type === 'delete'",
-    v-bind="$attrs",
+  button.btn.btn_type_fill(
+    v-if="customType === 'fill'",
     @click="$emit('handleClick')",
     :disabled="disabled"
   )
-    base-icon.btn__icon(name="trash")
-  button(
-    v-else-if="type === 'text'",
-    v-bind="$attrs",
+    slot
+  button.btn.btn_type_transparent(
+    v-else-if="customType === 'transparent'",
     @click="$emit('handleClick')",
-    :disabled="disabled",
-    :class="['btn', 'btn__default', { btn_bg_transparent: transparent }]"
+    :disabled="disabled"
   )
     slot
+  button.btn.btn_type_icon(
+    v-if="customType === 'trash'",
+    @click="$emit('handleClick')",
+    :disabled="disabled"
+  )
+    base-icon.btn__icon(:name="customType")
 </template>
 
 <script>
@@ -24,15 +27,12 @@ export default {
     BaseIcon,
   },
   props: {
-    disabled: {
-      type: Boolean,
-      default: false,
-    },
+    disabled: Boolean,
     transparent: {
       type: Boolean,
       default: false,
     },
-    type: {
+    customType: {
       type: String,
       default: "text",
     },

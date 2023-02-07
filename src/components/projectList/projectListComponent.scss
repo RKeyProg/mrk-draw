@@ -7,7 +7,9 @@
   margin-bottom: 2px;
 
   &:hover {
-    background: #e9ecf4;
+    .item__link {
+      background: #e9ecf4;
+    }
   }
 }
 
@@ -31,7 +33,7 @@
   position: relative;
   width: 100%;
   padding: 5px;
-  border-radius: 5px;
+  border-radius: 10px;
   transition: background 0.5s ease;
   z-index: 10;
 }

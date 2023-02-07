@@ -1,6 +1,10 @@
 <template lang="pug">
 .project-item
-  base-button.project__remove(type="delete", @click="removeExistedProject")
+  base-button.project__remove(
+    v-if="editable",
+    customType="trash",
+    @click="removeExistedProject"
+  )
   .project__file
     .project__preview
       base-icon.project__icon(name="user")
@@ -21,9 +25,12 @@ export default {
   },
   props: {
     project: Object,
+    editable: Boolean,
   },
   methods: {
-    ...mapActions(["removeProject"]),
+    ...mapActions({
+      removeProject: "user/removeProject",
+    }),
     removeExistedProject() {
       this.removeProject(this.project.id);
     },

@@ -1,8 +1,7 @@
 <template lang="pug">
 .profile-user
   profile-person-data.profile__person
-  project-list(v-if="projects.length", :projects="projects")
-  .project-list__not-exist(v-else) Сохраненные проекты не найдены
+  project-list(:projects="projects", editable)
 </template>
 
 <script>
@@ -17,7 +16,7 @@ export default {
   },
   computed: {
     ...mapState({
-      projects: (state) => state.profile.projects,
+      projects: (state) => state.user.projects,
     }),
   },
 };
