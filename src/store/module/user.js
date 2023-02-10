@@ -4,38 +4,38 @@ const user = {
     projects: [
       {
         id: 1,
-        title: "Untitled",
+        title: "Первая",
         name: "Дипломная работа",
         activity: "2 дня назад",
       },
       {
         id: 2,
-        title: "Untitled",
+        title: "Вторая",
         name: "",
         activity: "2 дня назад",
       },
       {
         id: 3,
-        title: "Untitled",
+        title: "Третья",
         name: "Дипломная работа",
         activity: "2 дня назад",
       },
       {
         id: 4,
-        title: "Untitled",
+        title: "Четвертая",
         name: "",
         activity: "2 дня назад",
       },
       {
         id: 5,
-        title: "Untitled",
+        title: "Пятая",
         name: "Дипломная работа",
         activity: "2 дня назад",
       },
       {
         id: 6,
-        title: "Untitled",
-        name: "Дипломная работа",
+        title: "",
+        name: "Шестая",
         activity: "2 дня назад",
       },
     ],
@@ -51,6 +51,11 @@ const user = {
     },
     SET_USER_PREVIEW(state, preview) {
       state.preview = preview;
+    },
+  },
+  getters: {
+    getCurrentProject: (state) => (id) => {
+      return state.projects.filter((item) => item.id === id);
     },
   },
   actions: {

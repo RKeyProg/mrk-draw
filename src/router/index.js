@@ -25,6 +25,14 @@ const routes = [
       sideBar: sideBar,
     },
   },
+  {
+    path: "/project/:id",
+    name: "project",
+    components: {
+      default: () => import("../views/project"),
+      sideBar: sideBar,
+    },
+  },
 ];
 
 const router = createRouter({

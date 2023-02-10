@@ -1,7 +1,7 @@
 <template lang="pug">
 .profile
   .section__healine
-    section-title(title="Мой профиль")
+    section-title(title="Мой профиль", simply)
   .section__container
     component(:is="currentComponent")
 </template>

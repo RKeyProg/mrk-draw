@@ -1,7 +1,7 @@
 <template lang="pug">
 .section-title
   h2 {{ title }}
-  section-title-nav
+  section-title-nav(v-if="simply")
 </template>
 
 <script>
@@ -15,6 +15,10 @@ export default {
     title: {
       type: String,
       default: "Untitled",
+    },
+    simply: {
+      type: Boolean,
+      default: false,
     },
   },
 };

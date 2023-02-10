@@ -6,7 +6,7 @@
     span Последняя активность
   ul.project__menu(v-for="project in projects", :key="project.id")
     li.project__item
-      a.item__link
+      router-link.item__link(:to="`/project/${project.id}`")
         project-list-item(:project="project", :editable="editable")
 .project-list__not-exist(v-else) Сохраненные проекты не найдены
 </template>
