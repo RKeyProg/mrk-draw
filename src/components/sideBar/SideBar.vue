@@ -1,6 +1,6 @@
 <template lang="pug">
-.side-bar__container
-  section.side-bar
+div(:class="['side-bar__container', { stencil: isShowStencil }]")
+  section.side-bar(v-if="!isProjectOpen")
     router-link.side-bar__logo(to="/")
       base-icon.side-bar__logo(name="logo")
     nav.side-bar__nav.nav
@@ -14,13 +14,31 @@
             base-icon.nav__icon(:name="item.name")
     router-link.side-bar__exit(to="/login")
       base-icon.side-bar__exit(name="exit") 
+  section.side-bar.project__toolbar(v-else)
+    router-link.side-bar__logo(to="/")
+      base-icon.side-bar__logo(name="logo")
+    transition(name="fade", mode="out-in")
+      .toolbar(v-if="!isShowStencil")
+        base-button.toolbar__btn(customType="icon", name="exportsvg")
+        base-button.toolbar__btn(customType="icon", name="exportpng")
+        base-button.toolbar__btn(customType="icon", name="print")
+      #stencil__container(v-else)
+    base-button.project__wrench(
+      customType="icon",
+      name="wrench",
+      @handleClick="changeIsShowStencil()"
+    )
 </template>
 
 <script>
 import BaseIcon from "../BaseIcon";
+import BaseButton from "../BaseButton";
+import { mapState, mapActions } from "vuex";
+
 export default {
   components: {
     BaseIcon,
+    BaseButton,
   },
   data() {
     return {
@@ -42,6 +60,17 @@ export default {
         },
       ],
     };
+  },
+  methods: {
+    ...mapActions({
+      changeIsShowStencil: "rappidStore/changeIsShowStencil",
+    }),
+  },
+  computed: {
+    ...mapState({
+      isShowStencil: (state) => state.rappidStore.isShowStencil,
+      isProjectOpen: (state) => state.rappidStore.isProjectOpen,
+    }),
   },
 };
 </script>

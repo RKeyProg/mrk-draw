@@ -1,18 +1,12 @@
-<template>
-  <div class="joint-app joint-theme-modern">
-    <div class="app-header">
-      <div class="app-title">
-        <h1>JointJS+</h1>
-      </div>
-      <div class="toolbar-container"></div>
-    </div>
-    <div class="app-body">
-      <div class="stencil-container"></div>
-      <div class="paper-container"></div>
-      <div class="inspector-container"></div>
-      <div class="navigator-container"></div>
-    </div>
-  </div>
+<template lang="pug">
+.joint-app.joint-theme-modern
+  .app-header
+    .toolbar-container
+  .app-body
+    .paper-container
+    .ispector__wrap
+      .inspector-container
+      .navigator-container
 </template>
 
 <script>
@@ -36,7 +30,7 @@ import halo from "./config/halo";
 import inspector from "./config/inspector";
 import sampleGraphs from "./config/sample-graphs";
 import selection from "./config/selection";
-import stencil from "./config/stencil";
+import stencilConfig from "./config/stencil";
 import toolbar from "./config/toolbar";
 
 App.config = Object.assign(
@@ -44,22 +38,29 @@ App.config = Object.assign(
   inspector,
   sampleGraphs,
   selection,
-  stencil,
+  stencilConfig,
   toolbar
 );
 joint.shapes.app = {};
 
+let paper;
+let paperScroller;
+let stencil;
+let graph;
+
+import { mapState } from "vuex";
+
 export default {
+  beforeRouteLeave() {
+    console.log("asd");
+  },
   mounted() {
     this.main();
-    this.themePicker();
     this.jointShapesApp();
     this.navigator();
 
     joint.setTheme("modern");
     const rappid = new App.MainView({ el: this.$el });
-    const themePicker = new App.ThemePicker({ mainView: rappid });
-    themePicker.render().$el.appendTo(document.body);
     rappid.graph.fromJSON(
       JSON.parse(App.config.sampleGraphs.emergencyProcedure)
     );
@@ -106,11 +107,11 @@ export default {
 
         // Create a graph, paper and wrap the paper in a PaperScroller.
         initializePaper: function () {
-          var graph = (this.graph = new joint.dia.Graph());
+          graph = this.graph = new joint.dia.Graph();
 
           this.commandManager = new joint.dia.CommandManager({ graph: graph });
 
-          var paper = (this.paper = new joint.dia.Paper({
+          paper = this.paper = new joint.dia.Paper({
             width: 1000,
             height: 1000,
             gridSize: 10,
@@ -121,7 +122,7 @@ export default {
             interactive: { linkMove: false },
             async: true,
             sorting: joint.dia.Paper.sorting.APPROX,
-          }));
+          });
 
           paper.on("blank:contextmenu", (evt) => {
             this.renderContextToolbar({ x: evt.clientX, y: evt.clientY });
@@ -135,12 +136,12 @@ export default {
 
           this.snaplines = new joint.ui.Snaplines({ paper: paper });
 
-          var paperScroller = (this.paperScroller = new joint.ui.PaperScroller({
+          paperScroller = this.paperScroller = new joint.ui.PaperScroller({
             paper: paper,
             autoResizePaper: true,
             scrollWhileDragging: true,
             cursor: "grab",
-          }));
+          });
 
           $(".paper-container").append(paperScroller.el);
           paperScroller.render().center();
@@ -166,14 +167,13 @@ export default {
 
         // Create and populate stencil.
         initializeStencil: function () {
-          var stencil = (this.stencil = new window.joint.ui.Stencil({
+          stencil = this.stencil = new joint.ui.Stencil({
             paper: this.paperScroller,
             snaplines: this.snaplines,
             scaleClones: true,
-            width: 240,
+            width: 200,
             groups: App.config.stencil.groups,
             dropAnimation: true,
-            groupsToggleButtons: true,
             search: {
               "*": [
                 "type",
@@ -202,19 +202,7 @@ export default {
             dragStartClone: function (cell) {
               return cell.clone().removeAttr("root/dataTooltip");
             },
-          }));
-
-          var r = new joint.shapes.basic.Rect({
-            position: { x: 10, y: 10 },
-            size: { width: 50, height: 30 },
           });
-          var c = new joint.shapes.basic.Circle({
-            position: { x: 70, y: 10 },
-            size: { width: 50, height: 30 },
-          });
-
-          $(".stencil-container").append(stencil.el);
-          stencil.render().load(App.config.stencil.shapes);
 
           stencil.on(
             "element:drop",
@@ -616,7 +604,7 @@ export default {
             "grid-size:change": this.paper.setGridSize.bind(this.paper),
           });
 
-          $(".toolbar-container").append(toolbar.el);
+          $(".rappid__toolbar-container").append(toolbar.el);
           toolbar.render();
         },
 
@@ -753,62 +741,6 @@ export default {
         render: joint.util.noop,
 
         update: joint.util.noop,
-      });
-    },
-    themePicker() {
-      App.ThemePicker = joint.ui.Toolbar.extend({
-        className: function () {
-          return `${joint.ui.Toolbar.prototype.className} theme-picker`;
-        },
-
-        options: {
-          mainView: null, // an instance of App.MainView
-        },
-
-        themes: {
-          type: "select-button-group",
-          name: "theme-picker",
-          multi: false,
-          options: [
-            { value: "modern", content: "Modern" },
-            { value: "dark", content: "Dark" },
-            { value: "material", content: "Material" },
-          ],
-          attrs: {
-            ".joint-select-button-group": {
-              "data-tooltip": "Change Theme",
-              "data-tooltip-position": "bottom",
-            },
-          },
-        },
-
-        init: function () {
-          this.themes.selected = this.themes.options.findIndex(
-            (opt) => opt.value === this.defaultTheme
-          );
-          this.options.tools = [this.themes];
-          this.on("theme-picker:option:select", this.onThemeSelected, this);
-
-          joint.ui.Toolbar.prototype.init.apply(this, arguments);
-        },
-
-        onThemeSelected: function (option) {
-          joint.setTheme(option.value);
-          if (this.options.mainView) {
-            this.adjustAppToTheme(this.options.mainView, option.value);
-          }
-        },
-
-        adjustAppToTheme: function (app, theme) {
-          // Material design has no grid shown.
-          if (theme === "material") {
-            app.paper.options.drawGrid = false;
-            app.paper.clearGrid();
-          } else {
-            app.paper.options.drawGrid = true;
-            app.paper.drawGrid();
-          }
-        },
       });
     },
     jointShapesApp() {
@@ -998,6 +930,149 @@ export default {
         }
       );
 
+      joint.shapes.standard.HeaderedRecord.define("app.Table", {
+        attrs: {
+          root: {
+            magnet: false,
+          },
+          body: {
+            stroke: "#FFF",
+            fill: "#FFF",
+            strokeWidthF: 1,
+          },
+          tabColor: {
+            x: -1,
+            y: -5,
+            width: "calc(w+2)",
+            height: 5,
+            stroke: "none",
+            fill: "#6C6C6C",
+            strokeWidth: 1,
+          },
+          header: {
+            fill: "#F8FAFC",
+            stroke: "#F8FAFC",
+            strokeWidth: 1,
+          },
+          headerLabel: {
+            fill: "#636363",
+            fontWeight: "bold",
+            fontFamily: "sans-serif",
+            textWrap: {
+              ellipsis: true,
+              height: 100,
+            },
+            text: "Table",
+          },
+          columns: [
+            { name: "id", type: "int", key: true },
+            { name: "full_name", type: "varchar" },
+            { name: "created_at", type: "datetime" },
+            { name: "country_code", type: "int" },
+          ],
+          itemBodies_0: {
+            // SVGRect which is an active magnet
+            // Do not use `true` to prevent CSS effects on hover
+            magnet: "item",
+          },
+          group_1: {
+            // let the pointer events propagate to the group_0
+            // which spans over 2 columns
+            pointerEvents: "none",
+          },
+          itemLabels: {
+            fontFamily: "sans-serif",
+            fill: "#636363",
+            pointerEvents: "none",
+          },
+          itemLabels_1: {
+            fill: "#9C9C9C",
+            textAnchor: "end",
+            x: `calc(0.5 * w - 10)`,
+          },
+          itemLabels_keys: {
+            x: `calc(0.5 * w - 30)`,
+          },
+          iconsGroup_1: {
+            // SVGGroup does not accept `x` attribute
+            refX: "50%",
+            refX2: -26,
+          },
+        },
+        ports: {
+          groups: {
+            in: {
+              markup: [
+                {
+                  tagName: "circle",
+                  selector: "portBody",
+                  attributes: {
+                    r: 10,
+                  },
+                },
+              ],
+              attrs: {
+                portBody: {
+                  magnet: true,
+                  fill: "#61549c",
+                  strokeWidth: 0,
+                },
+                portLabel: {
+                  fontSize: 11,
+                  fill: "#61549c",
+                  fontWeight: 800,
+                },
+              },
+              position: {
+                name: "left",
+              },
+              label: {
+                position: {
+                  name: "left",
+                  args: {
+                    y: 0,
+                  },
+                },
+              },
+            },
+            out: {
+              markup: [
+                {
+                  tagName: "circle",
+                  selector: "portBody",
+                  attributes: {
+                    r: 10,
+                  },
+                },
+              ],
+              position: {
+                name: "right",
+              },
+              attrs: {
+                portBody: {
+                  magnet: true,
+                  fill: "#61549c",
+                  strokeWidth: 0,
+                },
+                portLabel: {
+                  fontSize: 11,
+                  fill: "#61549c",
+                  fontWeight: 800,
+                },
+              },
+              label: {
+                position: {
+                  name: "right",
+                  args: {
+                    y: 0,
+                  },
+                },
+              },
+            },
+          },
+        },
+      });
+
       joint.shapes.standard.Link.define(
         "app.Link",
         {
@@ -1085,6 +1160,27 @@ export default {
         }
       );
     },
+  },
+  computed: {
+    ...mapState({
+      isShowStencil: (state) => state.rappidStore.isShowStencil,
+    }),
+  },
+  watch: {
+    isShowStencil() {
+      if (this.isShowStencil) {
+        setTimeout(() => {
+          $("#stencil__container").append(stencil.el);
+          stencil.render().load(App.config.stencil.shapes);
+        }, 600);
+      }
+    },
+  },
+  beforeUnmount() {
+    $(".paper-container").children().remove();
+    $(".inspector-container").children().remove();
+    $(".navigator-container").children().remove();
+    $(".rappid__toolbar-container").children().remove();
   },
 };
 </script>

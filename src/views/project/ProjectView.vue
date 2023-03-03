@@ -8,7 +8,7 @@
 <script>
 import sectionTitle from "../../components/sectionTitle";
 import workSpace from "../../components/workSpace";
-import { mapGetters } from "vuex";
+import { mapGetters, mapActions } from "vuex";
 
 export default {
   name: "ProjectView",
@@ -21,14 +21,24 @@ export default {
       currentProject: {},
     };
   },
+  methods: {
+    ...mapActions({
+      changeIsShowStencil: "rappidStore/changeIsShowStencil",
+      changeIsProjectOpen: "rappidStore/changeIsProjectOpen",
+    }),
+  },
   computed: {
     ...mapGetters({
       getCurrentProject: "user/getCurrentProject",
     }),
   },
   mounted() {
+    this.changeIsProjectOpen();
     const id = Number(this.$route.params.id);
     this.currentProject = this.getCurrentProject(id)[0];
+  },
+  unmounted() {
+    this.changeIsProjectOpen();
   },
 };
 </script>

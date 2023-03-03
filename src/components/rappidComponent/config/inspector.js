@@ -50,7 +50,7 @@ App.config = App.config || {};
     ],
 
     fontWeight: [
-      { value: "300", content: '<span style="font-weight: 300">Light</span>' },
+      { value: "500", content: '<span style="font-weight: 500">Light</span>' },
       {
         value: "Normal",
         content: '<span style="font-weight: Normal">Normal</span>',
@@ -63,18 +63,8 @@ App.config = App.config || {};
 
     fontFamily: [
       {
-        value: "Alegreya Sans",
-        content:
-          '<span style="font-family: Alegreya Sans">Alegreya Sans</span>',
-      },
-      {
-        value: "Averia Libre",
-        content: '<span style="font-family: Averia Libre">Averia Libre</span>',
-      },
-      {
-        value: "Roboto Condensed",
-        content:
-          '<span style="font-family: Roboto Condensed">Roboto Condensed</span>',
+        value: "Open Sans",
+        content: '<span style="font-family: Open Sans">Open Sans</span>',
       },
     ],
 

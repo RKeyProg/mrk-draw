@@ -13,11 +13,11 @@
   )
     slot
   button.btn.btn_type_icon(
-    v-if="customType === 'trash'",
+    v-if="customType === 'icon'",
     @click="$emit('handleClick')",
     :disabled="disabled"
   )
-    base-icon.btn__icon(:name="customType")
+    base-icon.btn__icon(:name="name")
 </template>
 
 <script>
@@ -35,6 +35,10 @@ export default {
     customType: {
       type: String,
       default: "text",
+    },
+    name: {
+      type: String,
+      default: "trash",
     },
   },
 };

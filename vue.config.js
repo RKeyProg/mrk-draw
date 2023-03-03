@@ -22,8 +22,12 @@ module.exports = defineConfig({
        * @see https://github.com/kisenka/svg-sprite-loader#configuration
        */
       loaderOptions: {
+        stylus: {
+          import: "@/src/assets/style/svg",
+        },
+        filenameHashing: false,
         extract: true,
-        spriteFilename: "img/icons.[hash:8].svg", // or 'img/icons.svg' if filenameHashing == false
+        spriteFilename: "@/img/icons.[hash:8].svg", // or 'img/icons.svg' if filenameHashing == false
       },
       /*
        * @see https://github.com/kisenka/svg-sprite-loader#configuration

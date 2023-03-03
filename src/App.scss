@@ -3,6 +3,19 @@
 @import "./mixins.scss";
 @import "@clientio/rappid/rappid.css";
 
+*::-webkit-scrollbar {
+  width: 5px; /* ширина scrollbar */
+  height: 5px;
+}
+*::-webkit-scrollbar-track {
+  background: none; /* цвет дорожки */
+}
+*::-webkit-scrollbar-thumb {
+  background-color: #989fb7; /* цвет плашки */
+  border-radius: 50px; /* закругления плашки */
+  border: 3px solid #989fb7; /* padding вокруг плашки */
+}
+
 html {
   font-size: 14px;
 

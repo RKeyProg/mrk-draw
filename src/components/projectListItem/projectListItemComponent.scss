@@ -12,7 +12,6 @@
 
   &:hover {
     & .project__remove {
-      width: 35px;
       left: -35px;
     }
   }
@@ -32,6 +31,8 @@
   background: #e9ecf4;
   border-radius: 5px;
   margin-right: 20px;
+  position: relative;
+  z-index: 20;
 }
 
 .project__icon {
@@ -44,10 +45,11 @@
 }
 
 .project__remove {
+  width: 35px;
+  height: 20px;
   position: absolute;
   left: 0;
-  width: 0;
   overflow: hidden;
-  transition: all 0.5s ease;
+  transition: left 0.5s ease;
   z-index: 1;
 }

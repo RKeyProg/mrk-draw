@@ -2,7 +2,8 @@
 .project-item
   base-button.project__remove(
     v-if="editable",
-    customType="trash",
+    customType="icon",
+    name="trash",
     @click="removeExistedProject"
   )
   .project__file

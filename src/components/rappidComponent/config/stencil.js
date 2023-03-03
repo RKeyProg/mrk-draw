@@ -8,45 +8,16 @@ App.config = App.config || {};
 
   App.config.stencil.groups = {
     standard: { index: 1, label: "Standard shapes" },
-    fsa: { index: 2, label: "State machine" },
-    pn: { index: 3, label: "Petri nets" },
-    erd: { index: 4, label: "Entity-relationship" },
-    uml: { index: 5, label: "UML" },
-    org: { index: 6, label: "ORG" },
+    // fsa: { index: 2, label: "State machine", closed: true },
+    // pn: { index: 3, label: "Petri nets", closed: true },
+    // erd: { index: 4, label: "Entity-relationship", closed: true },
+    // uml: { index: 5, label: "UML", closed: true },
+    // org: { index: 6, label: "ORG", closed: true },
   };
 
   App.config.stencil.shapes = {};
 
   App.config.stencil.shapes.standard = [
-    {
-      type: "standard.Rectangle",
-      size: { width: 90, height: 54 },
-      attrs: {
-        root: {
-          dataTooltip: "Rectangle",
-          dataTooltipPosition: "left",
-          dataTooltipPositionSelector: ".joint-stencil",
-        },
-        body: {
-          rx: 2,
-          ry: 2,
-          width: 50,
-          height: 30,
-          fill: "transparent",
-          stroke: "#31d0c6",
-          strokeWidth: 2,
-          strokeDasharray: "0",
-        },
-        label: {
-          text: "rect",
-          fill: "#c6c7e2",
-          fontFamily: "Roboto Condensed",
-          fontWeight: "Normal",
-          fontSize: 11,
-          strokeWidth: 0,
-        },
-      },
-    },
     {
       type: "standard.Ellipse",
       size: { width: 90, height: 54 },
