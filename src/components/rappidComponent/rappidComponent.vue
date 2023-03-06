@@ -58,6 +58,7 @@ export default {
     this.main();
     this.jointShapesApp();
     this.navigator();
+    this.isExport();
 
     joint.setTheme("modern");
     const rappid = new App.MainView({ el: this.$el });
@@ -66,6 +67,19 @@ export default {
     );
   },
   methods: {
+    isExport() {
+      setTimeout(() => {
+        $(".toolbar__btn_svg").click(() => {
+          App.MainView.prototype.openAsSVG(paper);
+        });
+        $(".toolbar__btn_png").click(() => {
+          App.MainView.prototype.openAsPNG(paper);
+        });
+        $(".toolbar__btn_print").click(() => {
+          paper.print();
+        });
+      }, 100);
+    },
     main() {
       App.MainView = joint.mvc.View.extend({
         className: "app",
@@ -200,7 +214,13 @@ export default {
             },
             // Remove tooltip definition from clone
             dragStartClone: function (cell) {
-              return cell.clone().removeAttr("root/dataTooltip");
+              let clone = cell.clone();
+              let paperSize = cell.get("paperSize");
+              if (paperSize) {
+                clone.resize(paperSize.width, paperSize.height);
+                clone.unset("paperSize");
+              }
+              return clone.removeAttr("root/dataTooltip");
             },
           });
 
@@ -579,7 +599,7 @@ export default {
         },
 
         initializeToolbar: function () {
-          var toolbar = (this.toolbar = new joint.ui.Toolbar({
+          let toolbar = (this.toolbar = new joint.ui.Toolbar({
             autoToggle: true,
             groups: App.config.toolbar.groups,
             tools: App.config.toolbar.tools,
@@ -590,8 +610,6 @@ export default {
           }));
 
           toolbar.on({
-            "svg:pointerclick": this.openAsSVG.bind(this),
-            "png:pointerclick": this.openAsPNG.bind(this),
             "to-front:pointerclick": this.applyOnSelection.bind(
               this,
               "toFront"
@@ -600,12 +618,23 @@ export default {
             "layout:pointerclick": this.layoutDirectedGraph.bind(this),
             "snapline:change": this.changeSnapLines.bind(this),
             "clear:pointerclick": this.graph.clear.bind(this.graph),
-            "print:pointerclick": this.paper.print.bind(this.paper),
             "grid-size:change": this.paper.setGridSize.bind(this.paper),
           });
 
           $(".rappid__toolbar-container").append(toolbar.el);
           toolbar.render();
+
+          // setTimeout(() => {
+          //   $(".toolbar__btn_svg").click(() => {
+          //     this.openAsSVG();
+          //   });
+          //   $(".toolbar__btn_png").click(() => {
+          //     this.openAsPNG();
+          //   });
+          //   $(".toolbar__btn_print").click(() => {
+          //     this.paper.print();
+          //   });
+          // }, 100);
         },
 
         applyOnSelection: function (method) {
@@ -637,8 +666,8 @@ export default {
         // backwards compatibility for older shapes
         exportStylesheet: ".scalable * { vector-effect: non-scaling-stroke }",
 
-        openAsSVG: function () {
-          var paper = this.paper;
+        openAsSVG: function (paper) {
+          // var paper = paper;
           paper.hideTools().toSVG(
             function (svg) {
               new joint.ui.Lightbox({
@@ -930,149 +959,6 @@ export default {
         }
       );
 
-      joint.shapes.standard.HeaderedRecord.define("app.Table", {
-        attrs: {
-          root: {
-            magnet: false,
-          },
-          body: {
-            stroke: "#FFF",
-            fill: "#FFF",
-            strokeWidthF: 1,
-          },
-          tabColor: {
-            x: -1,
-            y: -5,
-            width: "calc(w+2)",
-            height: 5,
-            stroke: "none",
-            fill: "#6C6C6C",
-            strokeWidth: 1,
-          },
-          header: {
-            fill: "#F8FAFC",
-            stroke: "#F8FAFC",
-            strokeWidth: 1,
-          },
-          headerLabel: {
-            fill: "#636363",
-            fontWeight: "bold",
-            fontFamily: "sans-serif",
-            textWrap: {
-              ellipsis: true,
-              height: 100,
-            },
-            text: "Table",
-          },
-          columns: [
-            { name: "id", type: "int", key: true },
-            { name: "full_name", type: "varchar" },
-            { name: "created_at", type: "datetime" },
-            { name: "country_code", type: "int" },
-          ],
-          itemBodies_0: {
-            // SVGRect which is an active magnet
-            // Do not use `true` to prevent CSS effects on hover
-            magnet: "item",
-          },
-          group_1: {
-            // let the pointer events propagate to the group_0
-            // which spans over 2 columns
-            pointerEvents: "none",
-          },
-          itemLabels: {
-            fontFamily: "sans-serif",
-            fill: "#636363",
-            pointerEvents: "none",
-          },
-          itemLabels_1: {
-            fill: "#9C9C9C",
-            textAnchor: "end",
-            x: `calc(0.5 * w - 10)`,
-          },
-          itemLabels_keys: {
-            x: `calc(0.5 * w - 30)`,
-          },
-          iconsGroup_1: {
-            // SVGGroup does not accept `x` attribute
-            refX: "50%",
-            refX2: -26,
-          },
-        },
-        ports: {
-          groups: {
-            in: {
-              markup: [
-                {
-                  tagName: "circle",
-                  selector: "portBody",
-                  attributes: {
-                    r: 10,
-                  },
-                },
-              ],
-              attrs: {
-                portBody: {
-                  magnet: true,
-                  fill: "#61549c",
-                  strokeWidth: 0,
-                },
-                portLabel: {
-                  fontSize: 11,
-                  fill: "#61549c",
-                  fontWeight: 800,
-                },
-              },
-              position: {
-                name: "left",
-              },
-              label: {
-                position: {
-                  name: "left",
-                  args: {
-                    y: 0,
-                  },
-                },
-              },
-            },
-            out: {
-              markup: [
-                {
-                  tagName: "circle",
-                  selector: "portBody",
-                  attributes: {
-                    r: 10,
-                  },
-                },
-              ],
-              position: {
-                name: "right",
-              },
-              attrs: {
-                portBody: {
-                  magnet: true,
-                  fill: "#61549c",
-                  strokeWidth: 0,
-                },
-                portLabel: {
-                  fontSize: 11,
-                  fill: "#61549c",
-                  fontWeight: 800,
-                },
-              },
-              label: {
-                position: {
-                  name: "right",
-                  args: {
-                    y: 0,
-                  },
-                },
-              },
-            },
-          },
-        },
-      });
-
       joint.shapes.standard.Link.define(
         "app.Link",
         {
@@ -1084,7 +970,12 @@ export default {
           },
           labels: [],
           attrs: {
+            wrapper: {
+              connection: true,
+              strokeWidth: 10,
+            },
             line: {
+              connection: true,
               stroke: "#8f8f8f",
               strokeDasharray: "0",
               strokeWidth: 2,

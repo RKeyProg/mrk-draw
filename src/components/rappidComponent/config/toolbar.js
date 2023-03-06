@@ -51,47 +51,6 @@ App.config = App.config || {};
           },
         },
       },
-      // {
-      //   type: "button",
-      //   name: "svg",
-      //   group: "export",
-      //   text: "SVG",
-      //   attrs: {
-      //     button: {
-      //       id: "btn-svg",
-      //       "data-tooltip": "Экспортировать в SVG",
-      //       "data-tooltip-position": "top",
-      //       "data-tooltip-position-selector": ".rappid__toolbar-container",
-      //     },
-      //   },
-      // },
-      // {
-      //   type: "button",
-      //   name: "png",
-      //   group: "export",
-      //   text: "PNG",
-      //   attrs: {
-      //     button: {
-      //       id: "btn-png",
-      //       "data-tooltip": "Экспортировать в PNG",
-      //       "data-tooltip-position": "top",
-      //       "data-tooltip-position-selector": ".rappid__toolbar-container",
-      //     },
-      //   },
-      // },
-      // {
-      //   type: "button",
-      //   name: "print",
-      //   group: "print",
-      //   attrs: {
-      //     button: {
-      //       id: "btn-print",
-      //       "data-tooltip": "Распечатать",
-      //       "data-tooltip-position": "top",
-      //       "data-tooltip-position-selector": ".rappid__toolbar-container",
-      //     },
-      //   },
-      // },
       {
         type: "button",
         name: "to-front",
@@ -118,19 +77,6 @@ App.config = App.config || {};
           },
         },
       },
-      // {
-      //   type: "button",
-      //   group: "layout",
-      //   name: "layout",
-      //   attrs: {
-      //     button: {
-      //       id: "btn-layout",
-      //       "data-tooltip": "Структурировать схему",
-      //       "data-tooltip-position": "top",
-      //       "data-tooltip-position-selector": ".rappid__toolbar-container",
-      //     },
-      //   },
-      // },
       {
         type: "zoom-to-fit",
         name: "zoom-to-fit",
@@ -155,12 +101,6 @@ App.config = App.config || {};
           },
         },
       },
-      // {
-      //   type: "label",
-      //   name: "zoom-slider-label",
-      //   group: "zoom",
-      //   text: "Zoom:",
-      // },
       {
         type: "zoom-slider",
         name: "zoom-slider",

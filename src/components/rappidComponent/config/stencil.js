@@ -1,6 +1,174 @@
 var App = App || {};
 App.config = App.config || {};
 
+import * as joint from "@clientio/rappid";
+
+class Table extends joint.shapes.standard.HeaderedRecord {
+  defaults() {
+    return joint.util.defaultsDeep(
+      {
+        type: "app.Table",
+        columns: [],
+        padding: { top: 35, bottom: 5, left: 5, right: 5 },
+        size: { width: 90, height: 54 },
+        // itemMinLabelWidth: 80,
+        // itemHeight: 25,
+        itemOffset: 0,
+        itemOverflow: true,
+        attrs: {
+          root: {
+            magnet: false,
+          },
+          body: {
+            stroke: "#f1554c",
+            fill: "transparent",
+            strokeWidth: 1,
+          },
+          header: {
+            fill: "transparent",
+            stroke: "#f1554c",
+            strokeWidth: 1,
+          },
+          headerLabel: {
+            fill: "#32343F",
+            fontWeight: "bold",
+            fontFamily: "sans-serif",
+            fontSize: "12px",
+            textWrap: {
+              ellipsis: true,
+              height: 20,
+            },
+          },
+          itemBodies_0: {
+            // SVGRect which is an active magnet
+            // Do not use `true` to prevent CSS effects on hover
+            magnet: "item",
+          },
+          group_1: {
+            // let the pointer events propagate to the group_0
+            // which spans over 2 columns
+            pointerEvents: "none",
+          },
+          itemLabels: {
+            fontFamily: "sans-serif",
+            fontSize: "12px",
+            fill: "#32343F",
+            fontWeight: "500",
+            pointerEvents: "none",
+          },
+          itemLabels_1: {
+            fill: "#f1554c",
+            textAnchor: "end",
+            x: `calc(0.5 * w - 10)`,
+          },
+          itemLabels_keys: {
+            x: `calc(0.5 * w - 30)`,
+          },
+          iconsGroup_1: {
+            // SVGGroup does not accept `x` attribute
+            refX: "50%",
+            refX2: -26,
+          },
+        },
+      },
+      super.defaults
+    );
+  }
+
+  preinitialize() {
+    this.markup = [
+      {
+        tagName: "rect",
+        selector: "body",
+      },
+      {
+        tagName: "rect",
+        selector: "header",
+      },
+      {
+        tagName: "rect",
+        selector: "tabColor",
+      },
+      {
+        tagName: "text",
+        selector: "headerLabel",
+      },
+    ];
+  }
+
+  initialize(...args) {
+    super.initialize(...args);
+    this.on("change", () => this.onColumnsChange());
+    this._setColumns(this.get("columns"));
+  }
+
+  onColumnsChange() {
+    if (this.hasChanged("columns")) {
+      this._setColumns(this.get("columns"));
+    }
+  }
+
+  setName(name, opt) {
+    return this.attr(["headerLabel", "text"], name, opt);
+  }
+
+  getName() {
+    return this.attr(["headerLabel", "text"]);
+  }
+
+  setTabColor(color) {
+    return this.attr(["tabColor", "fill"], color);
+  }
+
+  getTabColor() {
+    return this.attr(["tabColor", "fill"]);
+  }
+
+  setColumns(data) {
+    this.set("columns", data);
+    return this;
+  }
+
+  toJSON() {
+    const json = super.toJSON();
+    // keeping only the `columns` attribute
+    delete json.items;
+    return json;
+  }
+
+  _setColumns(data = []) {
+    const names = [];
+    const values = [];
+
+    data.forEach((item, i) => {
+      if (!item.name) return;
+
+      names.push({
+        id: item.name,
+        label: item.name,
+        span: 2,
+      });
+
+      const value = {
+        id: `${item.type}_${i}`,
+        label: item.type,
+      };
+      if (item.key) {
+        Object.assign(value, {
+          group: "keys",
+          icon: require("@/assets/rappid/key.svg"),
+        });
+      }
+      values.push(value);
+    });
+
+    this.set("items", [names, values]);
+    this.removeInvalidLinks();
+
+    return this;
+  }
+}
+
 (function () {
   "use strict";
 
@@ -18,9 +186,14 @@ App.config = App.config || {};
   App.config.stencil.shapes = {};
 
   App.config.stencil.shapes.standard = [
+    new Table().setName("Table").setColumns([
+      { name: "id", type: "int", key: true },
+      { name: "name", type: "string", key: false },
+    ]),
     {
       type: "standard.Ellipse",
       size: { width: 90, height: 54 },
+      paperSize: { width: 120, height: 80 },
       attrs: {
         root: {
           dataTooltip: "Ellipse",
@@ -105,196 +278,196 @@ App.config = App.config || {};
         items: [{ group: "in" }, { group: "in" }, { group: "out" }],
       },
     },
-    {
-      type: "standard.Polygon",
-      size: { width: 90, height: 54 },
-      attrs: {
-        root: {
-          dataTooltip: "Rhombus",
-          dataTooltipPosition: "left",
-          dataTooltipPositionSelector: ".joint-stencil",
-        },
-        body: {
-          points:
-            "calc(0.5 * w),0 calc(w),calc(0.5 * h) calc(0.5 * w),calc(h) 0,calc(0.5 * h)",
-          fill: "transparent",
-          stroke: "#31d0c6",
-          strokeWidth: 2,
-          strokeDasharray: "0",
-        },
-        label: {
-          text: "rhombus",
-          fill: "#c6c7e2",
-          fontFamily: "Roboto Condensed",
-          fontWeight: "Normal",
-          fontSize: 11,
-          strokeWidth: 0,
-        },
-      },
-    },
-    {
-      type: "standard.Cylinder",
-      size: { width: 90, height: 54 },
-      attrs: {
-        root: {
-          dataTooltip: "Cylinder",
-          dataTooltipPosition: "left",
-          dataTooltipPositionSelector: ".joint-stencil",
-        },
-        body: {
-          fill: "transparent",
-          stroke: "#31d0c6",
-          strokeWidth: 2,
-          strokeDasharray: "0",
-        },
-        top: {
-          fill: "#31d0c6",
-          stroke: "#31d0c6",
-          strokeWidth: 2,
-          strokeDasharray: "0",
-        },
-        label: {
-          text: "cylinder",
-          fill: "#c6c7e2",
-          fontFamily: "Roboto Condensed",
-          fontWeight: "Normal",
-          fontSize: 11,
-          strokeWidth: 0,
-        },
-      },
-    },
-    {
-      type: "standard.Image",
-      size: { width: 90, height: 71 },
-      attrs: {
-        root: {
-          dataTooltip: "Image",
-          dataTooltipPosition: "left",
-          dataTooltipPositionSelector: ".joint-stencil",
-        },
-        image: {
-          xlinkHref: require("@/assets/rappid/image-icon1.svg"),
-        },
-        body: {
-          fill: "transparent",
-          stroke: "#31d0c6",
-          strokeWidth: 2,
-          strokeDasharray: "0",
-        },
-        label: {
-          text: "image",
-          fontFamily: "Roboto Condensed",
-          fontWeight: "Normal",
-          fontSize: 11,
-          fill: "#c6c7e2",
-        },
-      },
-    },
-    {
-      type: "standard.EmbeddedImage",
-      size: { width: 90, height: 54 },
-      attrs: {
-        root: {
-          dataTooltip: "Card",
-          dataTooltipPosition: "left",
-          dataTooltipPositionSelector: ".joint-stencil",
-        },
-        body: {
-          fill: "transparent",
-          stroke: "#31d0c6",
-          strokeWidth: 2,
-          strokeDasharray: "0",
-        },
-        image: {
-          xlinkHref: require("@/assets/rappid/image-icon1.svg"),
-        },
-        label: {
-          text: "card",
-          fill: "#c6c7e2",
-          fontFamily: "Roboto Condensed",
-          fontWeight: "Normal",
-          fontSize: 11,
-          strokeWidth: 0,
-        },
-      },
-    },
-    {
-      type: "standard.InscribedImage",
-      size: { width: 60, height: 60 },
-      attrs: {
-        root: {
-          dataTooltip: "Icon",
-          dataTooltipPosition: "left",
-          dataTooltipPositionSelector: ".joint-stencil",
-        },
-        border: {
-          stroke: "#31d0c6",
-          strokeWidth: 3,
-          strokeDasharray: "0",
-        },
-        background: {
-          fill: "transparent",
-        },
-        image: {
-          xlinkHref: require("@/assets/rappid/image-icon1.svg"),
-        },
-        label: {
-          text: "icon",
-          fill: "#c6c7e2",
-          fontFamily: "Roboto Condensed",
-          fontWeight: "Normal",
-          fontSize: 11,
-          strokeWidth: 0,
-        },
-      },
-    },
-    {
-      type: "standard.HeaderedRectangle",
-      size: { width: 90, height: 54 },
-      attrs: {
-        root: {
-          dataTooltip: "Rectangle with header",
-          dataTooltipPosition: "left",
-          dataTooltipPositionSelector: ".joint-stencil",
-        },
-        body: {
-          fill: "transparent",
-          stroke: "#31d0c6",
-          strokeWidth: 2,
-          strokeDasharray: "0",
-        },
-        header: {
-          stroke: "#31d0c6",
-          fill: "#31d0c6",
-          strokeWidth: 2,
-          strokeDasharray: "0",
-          height: 20,
-        },
-        bodyText: {
-          textWrap: {
-            text: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur molestie.",
-            width: -10,
-            height: -20,
-            ellipsis: true,
-          },
-          fill: "#c6c7e2",
-          fontFamily: "Roboto Condensed",
-          fontWeight: "Normal",
-          fontSize: 11,
-          strokeWidth: 0,
-          refY2: 12,
-        },
-        headerText: {
-          text: "header",
-          fill: "#f6f6f6",
-          fontFamily: "Roboto Condensed",
-          fontWeight: "Normal",
-          fontSize: 11,
-          strokeWidth: 0,
-          refY: 12,
-        },
-      },
-    },
+    // {
+    //   type: "standard.Polygon",
+    //   size: { width: 90, height: 54 },
+    //   attrs: {
+    //     root: {
+    //       dataTooltip: "Rhombus",
+    //       dataTooltipPosition: "left",
+    //       dataTooltipPositionSelector: ".joint-stencil",
+    //     },
+    //     body: {
+    //       points:
+    //         "calc(0.5 * w),0 calc(w),calc(0.5 * h) calc(0.5 * w),calc(h) 0,calc(0.5 * h)",
+    //       fill: "transparent",
+    //       stroke: "#31d0c6",
+    //       strokeWidth: 2,
+    //       strokeDasharray: "0",
+    //     },
+    //     label: {
+    //       text: "rhombus",
+    //       fill: "#c6c7e2",
+    //       fontFamily: "Roboto Condensed",
+    //       fontWeight: "Normal",
+    //       fontSize: 11,
+    //       strokeWidth: 0,
+    //     },
+    //   },
+    // },
+    // {
+    //   type: "standard.Cylinder",
+    //   size: { width: 90, height: 54 },
+    //   attrs: {
+    //     root: {
+    //       dataTooltip: "Cylinder",
+    //       dataTooltipPosition: "left",
+    //       dataTooltipPositionSelector: ".joint-stencil",
+    //     },
+    //     body: {
+    //       fill: "transparent",
+    //       stroke: "#31d0c6",
+    //       strokeWidth: 2,
+    //       strokeDasharray: "0",
+    //     },
+    //     top: {
+    //       fill: "#31d0c6",
+    //       stroke: "#31d0c6",
+    //       strokeWidth: 2,
+    //       strokeDasharray: "0",
+    //     },
+    //     label: {
+    //       text: "cylinder",
+    //       fill: "#c6c7e2",
+    //       fontFamily: "Roboto Condensed",
+    //       fontWeight: "Normal",
+    //       fontSize: 11,
+    //       strokeWidth: 0,
+    //     },
+    //   },
+    // },
+    // {
+    //   type: "standard.Image",
+    //   size: { width: 90, height: 71 },
+    //   attrs: {
+    //     root: {
+    //       dataTooltip: "Image",
+    //       dataTooltipPosition: "left",
+    //       dataTooltipPositionSelector: ".joint-stencil",
+    //     },
+    //     image: {
+    //       xlinkHref: require("@/assets/rappid/image-icon1.svg"),
+    //     },
+    //     body: {
+    //       fill: "transparent",
+    //       stroke: "#31d0c6",
+    //       strokeWidth: 2,
+    //       strokeDasharray: "0",
+    //     },
+    //     label: {
+    //       text: "image",
+    //       fontFamily: "Roboto Condensed",
+    //       fontWeight: "Normal",
+    //       fontSize: 11,
+    //       fill: "#c6c7e2",
+    //     },
+    //   },
+    // },
+    // {
+    //   type: "standard.EmbeddedImage",
+    //   size: { width: 90, height: 54 },
+    //   attrs: {
+    //     root: {
+    //       dataTooltip: "Card",
+    //       dataTooltipPosition: "left",
+    //       dataTooltipPositionSelector: ".joint-stencil",
+    //     },
+    //     body: {
+    //       fill: "transparent",
+    //       stroke: "#31d0c6",
+    //       strokeWidth: 2,
+    //       strokeDasharray: "0",
+    //     },
+    //     image: {
+    //       xlinkHref: require("@/assets/rappid/image-icon1.svg"),
+    //     },
+    //     label: {
+    //       text: "card",
+    //       fill: "#c6c7e2",
+    //       fontFamily: "Roboto Condensed",
+    //       fontWeight: "Normal",
+    //       fontSize: 11,
+    //       strokeWidth: 0,
+    //     },
+    //   },
+    // },
+    // {
+    //   type: "standard.InscribedImage",
+    //   size: { width: 60, height: 60 },
+    //   attrs: {
+    //     root: {
+    //       dataTooltip: "Icon",
+    //       dataTooltipPosition: "left",
+    //       dataTooltipPositionSelector: ".joint-stencil",
+    //     },
+    //     border: {
+    //       stroke: "#31d0c6",
+    //       strokeWidth: 3,
+    //       strokeDasharray: "0",
+    //     },
+    //     background: {
+    //       fill: "transparent",
+    //     },
+    //     image: {
+    //       xlinkHref: require("@/assets/rappid/image-icon1.svg"),
+    //     },
+    //     label: {
+    //       text: "icon",
+    //       fill: "#c6c7e2",
+    //       fontFamily: "Roboto Condensed",
+    //       fontWeight: "Normal",
+    //       fontSize: 11,
+    //       strokeWidth: 0,
+    //     },
+    //   },
+    // },
+    // {
+    //   type: "standard.HeaderedRectangle",
+    //   size: { width: 90, height: 54 },
+    //   attrs: {
+    //     root: {
+    //       dataTooltip: "Rectangle with header",
+    //       dataTooltipPosition: "left",
+    //       dataTooltipPositionSelector: ".joint-stencil",
+    //     },
+    //     body: {
+    //       fill: "transparent",
+    //       stroke: "#31d0c6",
+    //       strokeWidth: 2,
+    //       strokeDasharray: "0",
+    //     },
+    //     header: {
+    //       stroke: "#31d0c6",
+    //       fill: "#31d0c6",
+    //       strokeWidth: 2,
+    //       strokeDasharray: "0",
+    //       height: 20,
+    //     },
+    //     bodyText: {
+    //       textWrap: {
+    //         text: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur molestie.",
+    //         width: -10,
+    //         height: -20,
+    //         ellipsis: true,
+    //       },
+    //       fill: "#c6c7e2",
+    //       fontFamily: "Roboto Condensed",
+    //       fontWeight: "Normal",
+    //       fontSize: 11,
+    //       strokeWidth: 0,
+    //       refY2: 12,
+    //     },
+    //     headerText: {
+    //       text: "header",
+    //       fill: "#f6f6f6",
+    //       fontFamily: "Roboto Condensed",
+    //       fontWeight: "Normal",
+    //       fontSize: 11,
+    //       strokeWidth: 0,
+    //       refY: 12,
+    //     },
+    //   },
+    // },
   ];
 
   App.config.stencil.shapes.fsa = [

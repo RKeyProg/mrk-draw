@@ -19,9 +19,18 @@ div(:class="['side-bar__container', { stencil: isShowStencil }]")
       base-icon.side-bar__logo(name="logo")
     transition(name="fade", mode="out-in")
       .toolbar(v-if="!isShowStencil")
-        base-button.toolbar__btn(customType="icon", name="exportsvg")
-        base-button.toolbar__btn(customType="icon", name="exportpng")
-        base-button.toolbar__btn(customType="icon", name="print")
+        base-button.toolbar__btn.toolbar__btn_svg(
+          customType="icon",
+          name="exportsvg"
+        )
+        base-button.toolbar__btn.toolbar__btn_png(
+          customType="icon",
+          name="exportpng"
+        )
+        base-button.toolbar__btn.toolbar__btn_print(
+          customType="icon",
+          name="print"
+        )
       #stencil__container(v-else)
     base-button.project__wrench(
       customType="icon",

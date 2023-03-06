@@ -174,11 +174,13 @@ svg {
       padding: 0;
       max-height: 500px;
       overflow-y: scroll;
+      padding: 50px 100px !important;
     }
 
     .fg {
       border: none;
       border-radius: 0px;
+      background: #fff;
       filter: drop-shadow(0.1rem 0.1rem 0.15rem rgba(0, 0, 0, 0.2));
     }
 
@@ -391,5 +393,45 @@ svg {
         transition: 0.2s;
       }
     }
+  }
+}
+
+.joint-dialog.joint-lightbox {
+  margin-top: 0 !important;
+  display: flex !important;
+  align-items: center !important;
+  padding-bottom: 30px;
+  max-height: 100vh;
+}
+
+.joint-dialog.joint-lightbox.joint-theme-modern .btn-close {
+  outline: none;
+  font-weight: 600;
+  color: #fff;
+  transition: color 0.3s ease;
+  border: none !important;
+
+  &:hover {
+    color: #f6511d;
+  }
+}
+
+.joint-dialog.joint-lightbox.joint-theme-modern .control-button {
+  width: 100% !important;
+  background: #f6511d !important;
+  border-color: #f6511d !important;
+  padding: 13px 25px !important;
+  height: auto !important;
+  transition: all 0.3s ease;
+  font-family: "Open Sans", sans-serif !important;
+  font-weight: 600 !important;
+  font-size: 14px !important;
+  font-weight: 700 !important;
+  line-height: 24px !important;
+  letter-spacing: 0.1em !important;
+  color: #fff !important;
+
+  &:hover {
+    background: #e74339 !important;
   }
 }

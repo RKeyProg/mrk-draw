@@ -17,7 +17,6 @@ $arrow: url("@/assets/rappid/arrow.svg");
 
   & * {
     font-family: "Open Sans", sans-serif !important;
-    font-weight: 500 !important;
   }
 }
 
@@ -293,9 +292,6 @@ button.joint-widget.joint-theme-modern {
   text-align: center;
   vertical-align: middle;
   box-sizing: border-box;
-  -moz-user-select: none;
-  -webkit-user-select: none;
-  -ms-user-select: none;
 
   & .current-view {
     position: absolute;
@@ -387,7 +383,13 @@ button.joint-widget.joint-theme-modern {
 }
 
 .joint-dialog.joint-lightbox .fg {
-  background-color: #f6f6f6;
+  background-color: #fff;
+  width: fit-content !important;
+  height: 70vh !important;
+
+  & .body {
+    padding: 50px 100px;
+  }
 
   & img {
     object-fit: contain;
@@ -542,4 +544,13 @@ button.joint-widget.joint-theme-modern {
 
 div.joint-toolbar .joint-toolbar-group {
   margin-right: 20px;
+}
+
+.joint-navigator.joint-theme-modern .current-view-control {
+  background-color: #f1554c;
+  border: none;
+  width: 7px;
+  height: 7px;
+  margin: 0;
+  transform: translate(0%, 60%);
 }
