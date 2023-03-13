@@ -239,6 +239,59 @@ App.config = App.config || {};
   };
 
   App.config.inspector = {
+    "app.MyTable": {
+      inputs: {
+        "attrs/headerLabel/text": {
+          label: "Name",
+          type: "text",
+          group: "settings",
+        },
+        columns: {
+          label: "Columns",
+          type: "list",
+          addButtonLabel: "Add Column",
+          removeButtonLabel: "Remove Column",
+          group: "rows",
+          item: {
+            type: "object",
+            properties: {
+              name: {
+                label: "Name",
+                type: "text",
+              },
+              type: {
+                label: "Type",
+                type: "select",
+                options: [
+                  "char",
+                  "varchar",
+                  "int",
+                  "datetime",
+                  "timestamp",
+                  "boolean",
+                  "enum",
+                  "uniqueidentifier",
+                ],
+              },
+              key: {
+                label: "Key",
+                type: "toggle",
+              },
+            },
+          },
+        },
+      },
+      groups: {
+        settings: {
+          label: "Общие",
+          index: 1,
+        },
+        rows: {
+          label: "Строки",
+          index: 2,
+        },
+      },
+    },
     "app.Link": {
       inputs: {
         attrs: {

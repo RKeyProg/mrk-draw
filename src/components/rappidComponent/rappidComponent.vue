@@ -48,11 +48,11 @@ let paperScroller;
 let stencil;
 let graph;
 
-import { mapState } from "vuex";
+import { mapState, mapActions } from "vuex";
 
 export default {
-  beforeRouteLeave() {
-    console.log("asd");
+  unmounted() {
+    this.changeIsShowStencil();
   },
   mounted() {
     this.main();
@@ -67,6 +67,9 @@ export default {
     );
   },
   methods: {
+    ...mapActions({
+      changeIsShowStencil: "rappidStore/changeIsShowStencil",
+    }),
     isExport() {
       setTimeout(() => {
         $(".toolbar__btn_svg").click(() => {
@@ -185,7 +188,6 @@ export default {
             paper: this.paperScroller,
             snaplines: this.snaplines,
             scaleClones: true,
-            width: 200,
             groups: App.config.stencil.groups,
             dropAnimation: true,
             search: {
@@ -203,16 +205,17 @@ export default {
             },
             layout: {
               columns: 2,
-              marginX: 10,
+              marginX: 5,
               marginY: 10,
               columnGap: 10,
-              columnWidth: 100,
+              rowGap: 10,
+              columnWidth: "50%",
               // reset defaults
               resizeToFit: false,
-              dx: 0,
+              dx: 1,
               dy: 0,
             },
-            // Remove tooltip definition from clone
+            // Remove tooltip definition from   clone
             dragStartClone: function (cell) {
               let clone = cell.clone();
               let paperSize = cell.get("paperSize");
@@ -480,6 +483,8 @@ export default {
             cellView: elementView,
             allowRotation: false,
             preserveAspectRatio: !!element.get("preserveAspectRatio"),
+            maxWidth: element.get("maxWidth") || 300,
+            maxHeight: element.get("maxHeight") || 200,
             allowOrthogonalResize:
               element.get("allowOrthogonalResize") !== false,
           }).render();
@@ -1050,6 +1055,171 @@ export default {
           },
         }
       );
+
+      joint.shapes.app.MyTable = joint.shapes.standard.HeaderedRecord.extend({
+        defaults: joint.util.defaultsDeep(
+          {
+            type: "app.MyTable",
+            columns: [
+              { name: "id", type: "int", key: true },
+              { name: "name", type: "varchar" },
+            ],
+            padding: { top: 40, bottom: 5, left: 10, right: 10 },
+            itemMinLabelWidth: 20,
+            itemHeight: 25,
+            itemOffset: 0,
+            itemOverflow: true,
+            attrs: {
+              root: {
+                magnet: false,
+              },
+              body: {
+                stroke: "#32343F",
+                fill: "transparent",
+                strokeWidth: 2,
+              },
+              header: {
+                fill: "transparent",
+                stroke: "#32343F",
+                strokeWidth: 2,
+              },
+              headerLabel: {
+                fill: "#32343F",
+                fontWeight: 600,
+                fontSize: 14,
+                fontFamily: "sans-serif",
+                textWrap: {
+                  ellipsis: true,
+                  height: 30,
+                },
+              },
+              itemBodies_0: {
+                // SVGRect which is an active magnet
+                // Do not use `true` to prevent CSS effects on hover
+                magnet: "item",
+              },
+              group_1: {
+                // let the pointer events propagate to the group_0
+                // which spans over 2 columns
+                pointerEvents: "none",
+              },
+              itemLabels: {
+                fontWeight: 500,
+                fontSize: 14,
+                fontFamily: "sans-serif",
+                fill: "#32343F",
+                pointerEvents: "none",
+              },
+              itemLabels_1: {
+                fill: "#9C9C9C",
+                textAnchor: "end",
+                x: "calc(0.5 * w - 10)",
+              },
+              itemLabels_keys: {
+                x: "calc(0.5 * w - 30)",
+              },
+              iconsGroup_1: {
+                // SVGGroup does not accept `x` attribute
+                refX: "50%",
+                refX2: -26,
+              },
+            },
+          },
+          joint.shapes.standard.HeaderedRecord.prototype.defaults
+        ),
+
+        preinitialize: function () {
+          this.markup = [
+            {
+              tagName: "rect",
+              selector: "body",
+            },
+            {
+              tagName: "rect",
+              selector: "header",
+            },
+            {
+              tagName: "text",
+              selector: "headerLabel",
+            },
+          ];
+        },
+
+        initialize: function (...args) {
+          joint.shapes.standard.HeaderedRecord.prototype.initialize.apply(
+            this,
+            ...args
+          );
+          this.on("change", () => this.onColumnsChange());
+          this._setColumns(this.get("columns"));
+        },
+
+        onColumnsChange: function () {
+          if (this.hasChanged("columns")) {
+            this._setColumns(this.get("columns"));
+          }
+        },
+
+        setName: function (name, opt) {
+          return this.attr(["headerLabel", "text"], name, opt);
+        },
+
+        getName: function () {
+          return this.attr(["headerLabel", "text"]);
+        },
+
+        setTabColor: function (color) {
+          return this.attr(["tabColor", "fill"], color);
+        },
+
+        getTabColor: function () {
+          return this.attr(["tabColor", "fill"]);
+        },
+
+        setColumns: function (data) {
+          this.set("columns", data);
+          return this;
+        },
+
+        toJSON: function () {
+          const json =
+            joint.shapes.standard.HeaderedRecord.prototype.toJSON.call(this);
+          delete json.items;
+          return json;
+        },
+
+        _setColumns: function (data = []) {
+          const names = [];
+          const values = [];
+
+          data.forEach((item, i) => {
+            if (!item.name) return;
+
+            names.push({
+              id: item.name,
+              label: item.name,
+              span: 2,
+            });
+
+            const value = {
+              id: `${item.type}_${i}`,
+              label: item.type,
+            };
+            if (item.key) {
+              Object.assign(value, {
+                group: "keys",
+                icon: require("@/assets/rappid/key.svg"),
+              });
+            }
+            values.push(value);
+          });
+
+          this.set("items", [names, values]);
+          this.removeInvalidLinks();
+
+          return this;
+        },
+      });
     },
   },
   computed: {

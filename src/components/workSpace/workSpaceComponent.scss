@@ -351,6 +351,150 @@ button.joint-widget.joint-theme-modern {
 
 .joint-inspector.joint-theme-modern {
   background: none;
+  color: #32343f;
+  font-weight: 600;
+
+  & .list-item {
+    background: none;
+  }
+}
+
+.joint-inspector.joint-theme-modern .content-editable,
+.joint-inspector.joint-theme-modern input[type="number"],
+.joint-inspector.joint-theme-modern input[type="text"],
+.joint-inspector.joint-theme-modern select,
+.joint-inspector.joint-theme-modern select.select,
+.joint-inspector.joint-theme-modern textarea {
+  margin: 0;
+  width: 100%;
+  padding: 0 10px;
+  border-radius: 10px;
+  font-weight: 700;
+  font-size: 12px;
+  line-height: 20px;
+  letter-spacing: 0.1em;
+  color: #32343f;
+  outline: none;
+  background: none;
+  border: 2px solid #32343f;
+  transition: all 0.3s ease;
+  box-sizing: border-box;
+
+  &::placeholder {
+    color: #989fb7;
+    font-weight: 700;
+    font-size: 12px;
+    line-height: 20px;
+    letter-spacing: 0.1em;
+    text-transform: capitalize;
+  }
+
+  &::selection {
+    color: #32343f;
+  }
+
+  &:focus {
+    border-color: #f1554c;
+  }
+}
+
+.joint-inspector.joint-theme-modern .toggle {
+  overflow: hidden;
+
+  & * {
+    transition: all 0.3s ease;
+  }
+
+  & input:checked + span {
+    background: #f1554c;
+  }
+
+  & span {
+    background: #0b2361;
+    & i {
+      box-shadow: none;
+
+      &::before {
+        color: #e9ecf4;
+        font-size: 10px;
+      }
+    }
+  }
+}
+
+.joint-inspector.joint-theme-modern .btn-list-add,
+.joint-inspector.joint-theme-modern .btn-list-del {
+  box-shadow: none;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 12px;
+  font-weight: 500;
+  letter-spacing: 0.1em;
+  background: none;
+  transition: all 0.3s ease;
+  padding: 5px 10px;
+  background: #f1554c;
+  border-radius: 50px;
+  color: #fff;
+
+  &:hover {
+    box-shadow: none;
+    background: #e74339;
+  }
+}
+
+.joint-inspector .joint-select-box.joint-theme-modern .select-box-selection {
+  border-radius: 10px;
+  color: #32343f;
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+}
+
+.select-box-option {
+  font-size: 12px;
+  letter-spacing: 0.1em;
+  font-weight: 500;
+}
+
+.select-box-option.selected:after {
+  display: none;
+}
+
+.joint-select-box-options.joint-theme-modern,
+.joint-select-box.joint-theme-modern .select-box-option.hover {
+  border-radius: 10px;
+}
+
+.joint-select-box-options.joint-theme-modern {
+  background: #f4f4fc;
+  border: 2px solid #f1554c;
+}
+
+.joint-select-box.joint-theme-modern .select-box-option.hover {
+  background: #f1554c;
+  transition: background 0.3s ease;
+}
+
+.select-box-selection {
+  overflow: hidden;
+  border: none;
+}
+
+.joint-inspector.joint-theme-modern
+  .joint-select-box.joint-color-palette.joint-theme-modern
+  div.select-box-selection {
+  border: none;
+}
+
+.joint-select-box[data-attribute$="/stroke"].joint-color-palette.joint-theme-modern
+  .select-box-selection
+  div.select-box-option-content:after {
+  background: none;
+  left: 0;
+  top: 0;
 }
 
 // Toolbar
@@ -509,7 +653,13 @@ button.joint-widget.joint-theme-modern {
   }
 }
 
-.joint-widget input[type="range"]::-webkit-slider-thumb {
+.joint-inspector.joint-theme-modern
+  input[type="range"]::-webkit-slider-runnable-track {
+  background: #989fb7;
+}
+
+.joint-widget input[type="range"]::-webkit-slider-thumb,
+.joint-inspector.joint-theme-modern input[type="range"]::-webkit-slider-thumb {
   -webkit-appearance: none !important;
   background: #f1554c !important;
   height: 10px;
@@ -518,6 +668,17 @@ button.joint-widget.joint-theme-modern {
   &:hover {
     cursor: pointer;
   }
+}
+
+.joint-inspector.joint-theme-modern input[type="range"]::-webkit-slider-thumb {
+  width: 8px;
+  height: 8px;
+}
+
+.joint-inspector.joint-theme-modern .units,
+.joint-inspector.joint-theme-modern output {
+  color: #32343f;
+  font-weight: 600;
 }
 
 .joint-toolbar.joint-theme-modern .units {
@@ -552,5 +713,5 @@ div.joint-toolbar .joint-toolbar-group {
   width: 7px;
   height: 7px;
   margin: 0;
-  transform: translate(0%, 60%);
+  transform: translate(60%, 60%);
 }

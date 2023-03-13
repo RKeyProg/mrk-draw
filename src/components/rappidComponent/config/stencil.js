@@ -3,172 +3,6 @@ App.config = App.config || {};
 
 import * as joint from "@clientio/rappid";
 
-class Table extends joint.shapes.standard.HeaderedRecord {
-  defaults() {
-    return joint.util.defaultsDeep(
-      {
-        type: "app.Table",
-        columns: [],
-        padding: { top: 35, bottom: 5, left: 5, right: 5 },
-        size: { width: 90, height: 54 },
-        // itemMinLabelWidth: 80,
-        // itemHeight: 25,
-        itemOffset: 0,
-        itemOverflow: true,
-        attrs: {
-          root: {
-            magnet: false,
-          },
-          body: {
-            stroke: "#f1554c",
-            fill: "transparent",
-            strokeWidth: 1,
-          },
-          header: {
-            fill: "transparent",
-            stroke: "#f1554c",
-            strokeWidth: 1,
-          },
-          headerLabel: {
-            fill: "#32343F",
-            fontWeight: "bold",
-            fontFamily: "sans-serif",
-            fontSize: "12px",
-            textWrap: {
-              ellipsis: true,
-              height: 20,
-            },
-          },
-          itemBodies_0: {
-            // SVGRect which is an active magnet
-            // Do not use `true` to prevent CSS effects on hover
-            magnet: "item",
-          },
-          group_1: {
-            // let the pointer events propagate to the group_0
-            // which spans over 2 columns
-            pointerEvents: "none",
-          },
-          itemLabels: {
-            fontFamily: "sans-serif",
-            fontSize: "12px",
-            fill: "#32343F",
-            fontWeight: "500",
-            pointerEvents: "none",
-          },
-          itemLabels_1: {
-            fill: "#f1554c",
-            textAnchor: "end",
-            x: `calc(0.5 * w - 10)`,
-          },
-          itemLabels_keys: {
-            x: `calc(0.5 * w - 30)`,
-          },
-          iconsGroup_1: {
-            // SVGGroup does not accept `x` attribute
-            refX: "50%",
-            refX2: -26,
-          },
-        },
-      },
-      super.defaults
-    );
-  }
-
-  preinitialize() {
-    this.markup = [
-      {
-        tagName: "rect",
-        selector: "body",
-      },
-      {
-        tagName: "rect",
-        selector: "header",
-      },
-      {
-        tagName: "rect",
-        selector: "tabColor",
-      },
-      {
-        tagName: "text",
-        selector: "headerLabel",
-      },
-    ];
-  }
-
-  initialize(...args) {
-    super.initialize(...args);
-    this.on("change", () => this.onColumnsChange());
-    this._setColumns(this.get("columns"));
-  }
-
-  onColumnsChange() {
-    if (this.hasChanged("columns")) {
-      this._setColumns(this.get("columns"));
-    }
-  }
-
-  setName(name, opt) {
-    return this.attr(["headerLabel", "text"], name, opt);
-  }
-
-  getName() {
-    return this.attr(["headerLabel", "text"]);
-  }
-
-  setTabColor(color) {
-    return this.attr(["tabColor", "fill"], color);
-  }
-
-  getTabColor() {
-    return this.attr(["tabColor", "fill"]);
-  }
-
-  setColumns(data) {
-    this.set("columns", data);
-    return this;
-  }
-
-  toJSON() {
-    const json = super.toJSON();
-    // keeping only the `columns` attribute
-    delete json.items;
-    return json;
-  }
-
-  _setColumns(data = []) {
-    const names = [];
-    const values = [];
-
-    data.forEach((item, i) => {
-      if (!item.name) return;
-
-      names.push({
-        id: item.name,
-        label: item.name,
-        span: 2,
-      });
-
-      const value = {
-        id: `${item.type}_${i}`,
-        label: item.type,
-      };
-      if (item.key) {
-        Object.assign(value, {
-          group: "keys",
-          icon: require("@/assets/rappid/key.svg"),
-        });
-      }
-      values.push(value);
-    });
-
-    this.set("items", [names, values]);
-    this.removeInvalidLinks();
-
-    return this;
-  }
-}
-
 (function () {
   "use strict";
 
@@ -183,17 +17,236 @@ class Table extends joint.shapes.standard.HeaderedRecord {
     // org: { index: 6, label: "ORG", closed: true },
   };
 
+  class Table extends joint.shapes.standard.HeaderedRecord {
+    defaults() {
+      return joint.util.defaultsDeep(
+        {
+          type: "app.Table",
+          columns: [
+            { name: "id", type: "int", key: true },
+            { name: "name", type: "varchar" },
+          ],
+          padding: { top: 40, bottom: 10, left: 10, right: 10 },
+          size: { width: 200 },
+          itemMinLabelWidth: 80,
+          itemHeight: 25,
+          itemOffset: 0,
+          itemOverflow: true,
+          attrs: {
+            root: {
+              magnet: false,
+            },
+            body: {
+              stroke: "#FFF",
+              fill: "#FFF",
+              strokeWidth: 1,
+            },
+            tabColor: {
+              x: -1,
+              y: -5,
+              width: "calc(w+2)",
+              height: 5,
+              stroke: "none",
+              fill: "#6C6C6C",
+              strokeWidth: 1,
+            },
+            header: {
+              fill: "#F8FAFC",
+              stroke: "#F8FAFC",
+              strokeWidth: 1,
+            },
+            headerLabel: {
+              fill: "#636363",
+              fontWeight: "bold",
+              fontFamily: "sans-serif",
+              textWrap: {
+                ellipsis: true,
+                height: 30,
+              },
+            },
+            itemBodies_0: {
+              // SVGRect which is an active magnet
+              // Do not use `true` to prevent CSS effects on hover
+              magnet: "item",
+            },
+            group_1: {
+              // let the pointer events propagate to the group_0
+              // which spans over 2 columns
+              pointerEvents: "none",
+            },
+            itemLabels: {
+              fontFamily: "sans-serif",
+              fill: "#636363",
+              pointerEvents: "none",
+            },
+            itemLabels_1: {
+              fill: "#9C9C9C",
+              textAnchor: "end",
+              x: "calc(0.5 * w - 10)",
+            },
+            itemLabels_keys: {
+              x: "calc(0.5 * w - 30)",
+            },
+            iconsGroup_1: {
+              // SVGGroup does not accept `x` attribute
+              refX: "50%",
+              refX2: -26,
+            },
+          },
+        },
+        super.defaults
+      );
+    }
+
+    preinitialize() {
+      this.markup = [
+        {
+          tagName: "rect",
+          selector: "body",
+        },
+        {
+          tagName: "rect",
+          selector: "header",
+        },
+        {
+          tagName: "rect",
+          selector: "tabColor",
+        },
+        {
+          tagName: "text",
+          selector: "headerLabel",
+        },
+      ];
+    }
+
+    initialize(...args) {
+      super.initialize(...args);
+      this.on("change", () => this.onColumnsChange());
+      this._setColumns(this.get("columns"));
+    }
+
+    onColumnsChange() {
+      if (this.hasChanged("columns")) {
+        this._setColumns(this.get("columns"));
+      }
+    }
+
+    setName(name, opt) {
+      return this.attr(["headerLabel", "text"], name, opt);
+    }
+
+    getName() {
+      return this.attr(["headerLabel", "text"]);
+    }
+
+    setTabColor(color) {
+      return this.attr(["tabColor", "fill"], color);
+    }
+
+    getTabColor() {
+      return this.attr(["tabColor", "fill"]);
+    }
+
+    setColumns(data) {
+      this.set("columns", data);
+      return this;
+    }
+
+    toJSON() {
+      const json = super.toJSON();
+      // keeping only the `columns` attribute
+      delete json.items;
+      return json;
+    }
+
+    _setColumns(data = []) {
+      const names = [];
+      const values = [];
+
+      data.forEach((item, i) => {
+        if (!item.name) return;
+
+        names.push({
+          id: item.name,
+          label: item.name,
+          span: 2,
+        });
+
+        const value = {
+          id: `${item.type}_${i}`,
+          label: item.type,
+        };
+        if (item.key) {
+          Object.assign(value, {
+            group: "keys",
+            icon: require("@/assets/rappid/key.svg"),
+          });
+        }
+        values.push(value);
+      });
+
+      this.set("items", [names, values]);
+      this.removeInvalidLinks();
+
+      return this;
+    }
+  }
+
+  const products = new Table()
+    .setName("products")
+    .setTabColor("#FFD700")
+    .position(570, 440)
+    .setColumns([
+      { name: "id", type: "int", key: true },
+      { name: "name", type: "varchar" },
+    ]);
+
   App.config.stencil.shapes = {};
 
   App.config.stencil.shapes.standard = [
-    new Table().setName("Table").setColumns([
-      { name: "id", type: "int", key: true },
-      { name: "name", type: "string", key: false },
-    ]),
+    {
+      type: "app.MyTable",
+      paperSize: { width: 200, height: 100 },
+      allowOrthogonalResize: false,
+      maxWidth: 250,
+      maxHeight: 150,
+      attrs: {
+        root: {
+          magnet: false,
+        },
+        headerLabel: {
+          text: "MyTable",
+        },
+        body: {
+          rx: 10,
+          ry: 10,
+        },
+        header: {
+          rx: 10,
+          ry: 10,
+        },
+      },
+    },
+    {
+      type: "app.MyTable",
+      paperSize: { width: 200, height: 100 },
+      allowOrthogonalResize: false,
+      maxWidth: 250,
+      maxHeight: 150,
+      attrs: {
+        root: {
+          magnet: false,
+        },
+        headerLabel: {
+          text: "MyTable",
+        },
+      },
+    },
     {
       type: "standard.Ellipse",
       size: { width: 90, height: 54 },
       paperSize: { width: 120, height: 80 },
+      resize: false,
       attrs: {
         root: {
           dataTooltip: "Ellipse",
@@ -202,7 +255,7 @@ class Table extends joint.shapes.standard.HeaderedRecord {
         },
         body: {
           width: 50,
-          height: 30,
+          height: 90,
           fill: "transparent",
           stroke: "#31d0c6",
           strokeWidth: 2,
@@ -218,66 +271,66 @@ class Table extends joint.shapes.standard.HeaderedRecord {
         },
       },
     },
-    {
-      type: "app.RectangularModel",
-      size: { width: 90, height: 67.5 },
-      allowOrthogonalResize: false,
-      attrs: {
-        root: {
-          dataTooltip: "Rectangle with ports",
-          dataTooltipPosition: "left",
-          dataTooltipPositionSelector: ".joint-stencil",
-        },
-        body: {
-          fill: "transparent",
-          rx: 2,
-          ry: 2,
-          stroke: "#31d0c6",
-          strokeWidth: 2,
-          strokeDasharray: "0",
-        },
-        label: {
-          text: "rect",
-          fill: "#c6c7e2",
-          fontFamily: "Roboto Condensed",
-          fontWeight: "Normal",
-          fontSize: 11,
-          strokeWidth: 0,
-        },
-      },
-      ports: {
-        items: [{ group: "in" }, { group: "in" }, { group: "out" }],
-      },
-    },
-    {
-      type: "app.CircularModel",
-      size: { width: 90, height: 54 },
-      allowOrthogonalResize: false,
-      attrs: {
-        root: {
-          dataTooltip: "Ellipse with ports",
-          dataTooltipPosition: "left",
-          dataTooltipPositionSelector: ".joint-stencil",
-        },
-        body: {
-          fill: "transparent",
-          stroke: "#31d0c6",
-          strokeWidth: 2,
-          strokeDasharray: "0",
-        },
-        label: {
-          text: "ellipse",
-          fill: "#c6c7e2",
-          fontFamily: "Roboto Condensed",
-          fontWeight: "Normal",
-          fontSize: 11,
-          strokeWidth: 0,
-        },
-      },
-      ports: {
-        items: [{ group: "in" }, { group: "in" }, { group: "out" }],
-      },
-    },
+    // {
+    //   type: "app.RectangularModel",
+    //   size: { width: 90, height: 67.5 },
+    //   allowOrthogonalResize: false,
+    //   attrs: {
+    //     root: {
+    //       dataTooltip: "Rectangle with ports",
+    //       dataTooltipPosition: "left",
+    //       dataTooltipPositionSelector: ".joint-stencil",
+    //     },
+    //     body: {
+    //       fill: "transparent",
+    //       rx: 2,
+    //       ry: 2,
+    //       stroke: "#31d0c6",
+    //       strokeWidth: 2,
+    //       strokeDasharray: "0",
+    //     },
+    //     label: {
+    //       text: "rect",
+    //       fill: "#c6c7e2",
+    //       fontFamily: "Roboto Condensed",
+    //       fontWeight: "Normal",
+    //       fontSize: 11,
+    //       strokeWidth: 0,
+    //     },
+    //   },
+    //   ports: {
+    //     items: [{ group: "in" }, { group: "in" }, { group: "out" }],
+    //   },
+    // },
+    // {
+    //   type: "app.CircularModel",
+    //   size: { width: 90, height: 54 },
+    //   allowOrthogonalResize: false,
+    //   attrs: {
+    //     root: {
+    //       dataTooltip: "Ellipse with ports",
+    //       dataTooltipPosition: "left",
+    //       dataTooltipPositionSelector: ".joint-stencil",
+    //     },
+    //     body: {
+    //       fill: "transparent",
+    //       stroke: "#31d0c6",
+    //       strokeWidth: 2,
+    //       strokeDasharray: "0",
+    //     },
+    //     label: {
+    //       text: "ellipse",
+    //       fill: "#c6c7e2",
+    //       fontFamily: "Roboto Condensed",
+    //       fontWeight: "Normal",
+    //       fontSize: 11,
+    //       strokeWidth: 0,
+    //     },
+    //   },
+    //   ports: {
+    //     items: [{ group: "in" }, { group: "in" }, { group: "out" }],
+    //   },
+    // },
     // {
     //   type: "standard.Polygon",
     //   size: { width: 90, height: 54 },
