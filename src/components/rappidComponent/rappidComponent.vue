@@ -64,9 +64,9 @@ export default {
 
     joint.setTheme("modern");
     const rappid = new App.MainView({ el: this.$el });
-    rappid.graph.fromJSON(
-      JSON.parse(App.config.sampleGraphs.emergencyProcedure)
-    );
+    // rappid.graph.fromJSON(
+    //   JSON.parse(App.config.sampleGraphs.emergencyProcedure)
+    // );
   },
   methods: {
     ...mapActions({
@@ -141,6 +141,14 @@ export default {
             interactive: { linkMove: false },
             async: true,
             sorting: joint.dia.Paper.sorting.APPROX,
+            validateConnection: function (
+              srcView,
+              srcMagnet,
+              tgtView,
+              tgtMagnet
+            ) {
+              return srcMagnet !== tgtMagnet;
+            },
           });
 
           paper.on("blank:contextmenu", (evt) => {
@@ -970,7 +978,38 @@ export default {
         "app.Link",
         {
           router: {
-            name: "normal",
+            name: "metro",
+          },
+          validateConnection: function (
+            cellViewS,
+            magnetS,
+            cellViewT,
+            magnetT,
+            end,
+            linkView
+          ) {
+            // Проверяем, является ли начальная ячейка ячейкой HeaderedRecord
+            if (
+              cellViewS.model instanceof joint.shapes.standard.HeaderedRecord
+            ) {
+              // Проверяем, что магнитная точка находится справа от ячейки
+              if (magnetS.getAttribute("port") === "right") {
+                // Если магнитная точка находится на правой стороне элемента, то разрешаем соединение
+                return true;
+              }
+            }
+            // Проверяем, является ли конечная ячейка ячейкой HeaderedRecord
+            if (
+              cellViewT.model instanceof joint.shapes.standard.HeaderedRecord
+            ) {
+              // Проверяем, что магнитная точка находится слева от ячейки
+              if (magnetT.getAttribute("port") === "left") {
+                // Если магнитная точка находится на левой стороне элемента, то разрешаем соединение
+                return true;
+              }
+            }
+            // Если соединение не соответствует условиям, то запрещаем его
+            return false;
           },
           connector: {
             name: "rounded",
@@ -990,12 +1029,12 @@ export default {
               sourceMarker: {
                 type: "path",
                 d: "M 0 0 0 0",
-                stroke: "none",
+                stroke: "#32343F",
               },
               targetMarker: {
                 type: "path",
-                d: "M 0 -5 -10 0 0 5 z",
-                stroke: "none",
+                d: "M 0 0 0 0",
+                stroke: "#32343F",
               },
             },
           },

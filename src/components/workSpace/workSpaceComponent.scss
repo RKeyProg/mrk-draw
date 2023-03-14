@@ -740,3 +740,12 @@ div.joint-toolbar .joint-toolbar-group {
   stroke: #f1554c;
   stroke-width: 2;
 }
+
+.joint-halo .handle.hidden {
+  display: block;
+}
+
+.joint-selection.joint-theme-modern .selection-wrapper,
+.joint-selection.joint-theme-modern .selection-box {
+  border: 2px solid #f1554c;
+}

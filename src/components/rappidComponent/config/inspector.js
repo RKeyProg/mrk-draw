@@ -108,10 +108,12 @@ App.config = App.config || {};
     ],
 
     arrowheadSize: [
-      { value: "M 0 0 0 0", content: "None" },
-      { value: "M 0 -3 -6 0 0 3 z", content: "Small" },
-      { value: "M 0 -5 -10 0 0 5 z", content: "Medium" },
-      { value: "M 0 -10 -15 0 0 10 z", content: "Large" },
+      { value: "M 0 0 0 0", content: "К одному" },
+      {
+        value: "M 0 0 L -10 -5 M 0 0 L -10 5 M 0 0 L -10 0",
+        content: "Ко многим",
+      },
+      { value: "M 0 -5 -10 0 0 5 z", content: "Стрелка" },
     ],
 
     strokeWidth: [
@@ -149,7 +151,7 @@ App.config = App.config || {};
           '<p style="width:20px;height:30px;margin:0 5px;border-bottom: 2px solid #F1554C;border-left: 2px solid #F1554C;"/>',
       },
       {
-        value: "oneSide",
+        value: "metro",
         content:
           '<p style="width:20px;height:30px;margin:0 5px;border: 2px solid #F1554C;border-top: none;"/>',
       },

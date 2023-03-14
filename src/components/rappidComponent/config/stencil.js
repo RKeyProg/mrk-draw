@@ -3,6 +3,48 @@ App.config = App.config || {};
 
 import * as joint from "@clientio/rappid";
 
+export class Link extends joint.dia.Link {
+  constructor() {
+    super(...arguments);
+    this.markup = [
+      {
+        tagName: "path",
+        selector: "wrapper",
+        attributes: {
+          fill: "none",
+          stroke: "transparent",
+        },
+      },
+      {
+        tagName: "path",
+        selector: "line",
+        attributes: {
+          fill: "none",
+        },
+      },
+    ];
+  }
+  defaults() {
+    return Object.assign(Object.assign({}, super.defaults), {
+      type: "app.Link",
+      z: -1,
+      attrs: {
+        wrapper: {
+          connection: true,
+          strokeWidth: 10,
+        },
+        line: {
+          connection: true,
+          stroke: "#A0A0A0",
+          strokeWidth: 2,
+        },
+      },
+    });
+  }
+}
+
+let myLink = new Link();
+
 (function () {
   "use strict";
 
