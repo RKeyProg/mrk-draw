@@ -6,6 +6,8 @@
 </template>
 
 <script>
+window.alert = console.log; // скрывает сообщение о лицензии
+
 export default {
   computed: {
     routeName() {

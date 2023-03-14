@@ -140,6 +140,13 @@ svg {
 #app {
   font-family: sans-serif;
 
+  [magnet="item"]:hover,
+  .column-connected {
+    fill: #f4f4fc;
+    stroke: #32343f;
+    stroke-width: 2;
+  }
+
   .canvas {
     top: 0;
     bottom: 0;

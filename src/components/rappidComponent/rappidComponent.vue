@@ -52,7 +52,9 @@ import { mapState, mapActions } from "vuex";
 
 export default {
   unmounted() {
-    this.changeIsShowStencil();
+    if (this.isShowStencil) {
+      this.changeIsShowStencil();
+    }
   },
   mounted() {
     this.main();
@@ -213,7 +215,7 @@ export default {
               // reset defaults
               resizeToFit: false,
               dx: 1,
-              dy: 0,
+              dy: 1,
             },
             // Remove tooltip definition from   clone
             dragStartClone: function (cell) {
@@ -692,7 +694,7 @@ export default {
         },
 
         openAsPNG: function () {
-          var paper = this.paper;
+          // var paper = this.paper;
           paper.hideTools().toPNG(
             function (dataURL) {
               new joint.ui.Lightbox({
@@ -981,7 +983,7 @@ export default {
             },
             line: {
               connection: true,
-              stroke: "#8f8f8f",
+              stroke: "#32343F",
               strokeDasharray: "0",
               strokeWidth: 2,
               fill: "none",
@@ -1003,7 +1005,7 @@ export default {
             attrs: {
               rect: {
                 fill: "#ffffff",
-                stroke: "#8f8f8f",
+                stroke: "#32343F",
                 strokeWidth: 1,
                 width: "calc(w + 10)",
                 height: "calc(h + 10)",
@@ -1064,7 +1066,7 @@ export default {
               { name: "id", type: "int", key: true },
               { name: "name", type: "varchar" },
             ],
-            padding: { top: 40, bottom: 5, left: 10, right: 10 },
+            padding: { top: 40, bottom: 10, left: 10, right: 10 },
             itemMinLabelWidth: 20,
             itemHeight: 25,
             itemOffset: 0,
@@ -1168,14 +1170,6 @@ export default {
           return this.attr(["headerLabel", "text"]);
         },
 
-        setTabColor: function (color) {
-          return this.attr(["tabColor", "fill"], color);
-        },
-
-        getTabColor: function () {
-          return this.attr(["tabColor", "fill"]);
-        },
-
         setColumns: function (data) {
           this.set("columns", data);
           return this;
@@ -1220,6 +1214,148 @@ export default {
           return this;
         },
       });
+
+      joint.shapes.app.MyTableLogic =
+        joint.shapes.standard.HeaderedRecord.extend({
+          defaults: joint.util.defaultsDeep(
+            {
+              type: "app.MyTableLogic",
+              columns: [{ name: "id" }, { name: "name" }],
+              padding: { top: 40, bottom: 10, left: 10, right: 10 },
+              itemMinLabelWidth: 20,
+              itemHeight: 25,
+              itemOffset: 0,
+              itemOverflow: true,
+              attrs: {
+                root: {
+                  magnet: false,
+                },
+                body: {
+                  stroke: "#32343F",
+                  fill: "transparent",
+                  strokeWidth: 2,
+                },
+                header: {
+                  fill: "transparent",
+                  stroke: "#32343F",
+                  strokeWidth: 2,
+                },
+                headerLabel: {
+                  fill: "#32343F",
+                  fontWeight: 600,
+                  fontSize: 14,
+                  fontFamily: "sans-serif",
+                  textWrap: {
+                    ellipsis: true,
+                    height: 30,
+                  },
+                },
+                itemBodies_0: {
+                  // SVGRect which is an active magnet
+                  // Do not use `true` to prevent CSS effects on hover
+                  magnet: "item",
+                },
+                group_1: {
+                  // let the pointer events propagate to the group_0
+                  // which spans over 2 columns
+                  pointerEvents: "none",
+                },
+                itemLabels: {
+                  fontWeight: 500,
+                  fontSize: 14,
+                  fontFamily: "sans-serif",
+                  fill: "#32343F",
+                  pointerEvents: "none",
+                },
+                itemLabels_1: {
+                  fill: "#9C9C9C",
+                  textAnchor: "end",
+                  x: "calc(0.5 * w - 10)",
+                },
+                itemLabels_keys: {
+                  x: "calc(0.5 * w - 30)",
+                },
+                iconsGroup_1: {
+                  // SVGGroup does not accept `x` attribute
+                  refX: "50%",
+                  refX2: -26,
+                },
+              },
+            },
+            joint.shapes.standard.HeaderedRecord.prototype.defaults
+          ),
+
+          preinitialize: function () {
+            this.markup = [
+              {
+                tagName: "rect",
+                selector: "body",
+              },
+              {
+                tagName: "rect",
+                selector: "header",
+              },
+              {
+                tagName: "text",
+                selector: "headerLabel",
+              },
+            ];
+          },
+
+          initialize: function (...args) {
+            joint.shapes.standard.HeaderedRecord.prototype.initialize.apply(
+              this,
+              ...args
+            );
+            this.on("change", () => this.onColumnsChange());
+            this._setColumns(this.get("columns"));
+          },
+
+          onColumnsChange: function () {
+            if (this.hasChanged("columns")) {
+              this._setColumns(this.get("columns"));
+            }
+          },
+
+          setName: function (name, opt) {
+            return this.attr(["headerLabel", "text"], name, opt);
+          },
+
+          getName: function () {
+            return this.attr(["headerLabel", "text"]);
+          },
+
+          setColumns: function (data) {
+            this.set("columns", data);
+            return this;
+          },
+
+          toJSON: function () {
+            const json =
+              joint.shapes.standard.HeaderedRecord.prototype.toJSON.call(this);
+            delete json.items;
+            return json;
+          },
+
+          _setColumns: function (data = []) {
+            const names = [];
+
+            data.forEach((item, i) => {
+              if (!item.name) return;
+
+              names.push({
+                id: item.name,
+                label: item.name,
+                span: 0,
+              });
+            });
+
+            this.set("items", [names]);
+            this.removeInvalidLinks();
+
+            return this;
+          },
+        });
     },
   },
   computed: {

@@ -10,21 +10,13 @@ App.config = App.config || {};
         content: "transparent",
         icon: require("@/assets/rappid/transparent-icon.svg"),
       },
-      { content: "#f6f6f6" },
-      { content: "#dcd7d7" },
-      { content: "#8f8f8f" },
-      { content: "#c6c7e2" },
-      { content: "#feb663" },
-      { content: "#fe854f" },
-      { content: "#b75d32" },
-      { content: "#31d0c6" },
-      { content: "#7c68fc" },
+      { content: "#F4F4FC" },
       { content: "#61549c" },
-      { content: "#6a6c8a" },
-      { content: "#4b4a67" },
-      { content: "#3c4260" },
-      { content: "#33334e" },
-      { content: "#222138" },
+      { content: "#FEB05F" },
+      { content: "#F1554C" },
+      { content: "#0B2361" },
+      { content: "#32343F" },
+      { content: "#000000" },
     ],
 
     colorPaletteReset: [
@@ -32,21 +24,13 @@ App.config = App.config || {};
         content: undefined,
         icon: require("@/assets/rappid/no-color-icon.svg"),
       },
-      { content: "#f6f6f6" },
-      { content: "#dcd7d7" },
-      { content: "#8f8f8f" },
-      { content: "#c6c7e2" },
-      { content: "#feb663" },
-      { content: "#fe854f" },
-      { content: "#b75d32" },
-      { content: "#31d0c6" },
-      { content: "#7c68fc" },
+      { content: "#F4F4FC" },
       { content: "#61549c" },
-      { content: "#6a6c8a" },
-      { content: "#4b4a67" },
-      { content: "#3c4260" },
-      { content: "#33334e" },
-      { content: "#222138" },
+      { content: "#FEB05F" },
+      { content: "#F1554C" },
+      { content: "#0B2361" },
+      { content: "#32343F" },
+      { content: "#000000" },
     ],
 
     fontWeight: [
@@ -134,22 +118,22 @@ App.config = App.config || {};
       {
         value: 1,
         content:
-          '<div style="background:#fff;width:2px;height:30px;margin:0 14px;border-radius: 2px;"/>',
+          '<div style="background:#F1554C;width:2px;height:30px;margin:0 14px;border-radius: 2px;"/>',
       },
       {
         value: 2,
         content:
-          '<div style="background:#fff;width:4px;height:30px;margin:0 13px;border-radius: 2px;"/>',
+          '<div style="background:#F1554C;width:4px;height:30px;margin:0 13px;border-radius: 2px;"/>',
       },
       {
         value: 4,
         content:
-          '<div style="background:#fff;width:8px;height:30px;margin:0 11px;border-radius: 2px;"/>',
+          '<div style="background:#F1554C;width:8px;height:30px;margin:0 11px;border-radius: 2px;"/>',
       },
       {
         value: 8,
         content:
-          '<div style="background:#fff;width:16px;height:30px;margin:0 8px;border-radius: 2px;"/>',
+          '<div style="background:#F1554C;width:16px;height:30px;margin:0 8px;border-radius: 2px;"/>',
       },
     ],
 
@@ -157,17 +141,17 @@ App.config = App.config || {};
       {
         value: "normal",
         content:
-          '<p style="background:#fff;width:2px;height:30px;margin:0 14px;border-radius: 2px;"/>',
+          '<p style="background:#F1554C;width:2px;height:30px;margin:0 14px;border-radius: 2px;"/>',
       },
       {
         value: "orthogonal",
         content:
-          '<p style="width:20px;height:30px;margin:0 5px;border-bottom: 2px solid #fff;border-left: 2px solid #fff;"/>',
+          '<p style="width:20px;height:30px;margin:0 5px;border-bottom: 2px solid #F1554C;border-left: 2px solid #F1554C;"/>',
       },
       {
         value: "oneSide",
         content:
-          '<p style="width:20px;height:30px;margin:0 5px;border: 2px solid #fff;border-top: none;"/>',
+          '<p style="width:20px;height:30px;margin:0 5px;border: 2px solid #F1554C;border-top: none;"/>',
       },
     ],
 
@@ -175,17 +159,17 @@ App.config = App.config || {};
       {
         value: "normal",
         content:
-          '<p style="width:20px;height:20px;margin:5px;border-top:2px solid #fff;border-left:2px solid #fff;"/>',
+          '<p style="width:20px;height:20px;margin:5px;border-top:2px solid #F1554C;border-left:2px solid #F1554C;"/>',
       },
       {
         value: "rounded",
         content:
-          '<p style="width:20px;height:20px;margin:5px;border-top-left-radius:30%;border-top:2px solid #fff;border-left:2px solid #fff;"/>',
+          '<p style="width:20px;height:20px;margin:5px;border-top-left-radius:30%;border-top:2px solid #F1554C;border-left:2px solid #F1554C;"/>',
       },
       {
         value: "smooth",
         content:
-          '<p style="width:20px;height:20px;margin:5px;border-top-left-radius:100%;border-top:2px solid #fff;border-left:2px solid #fff;"/>',
+          '<p style="width:20px;height:20px;margin:5px;border-top-left-radius:100%;border-top:2px solid #F1554C;border-left:2px solid #F1554C;"/>',
       },
     ],
 
@@ -276,6 +260,41 @@ App.config = App.config || {};
               key: {
                 label: "Key",
                 type: "toggle",
+              },
+            },
+          },
+        },
+      },
+      groups: {
+        settings: {
+          label: "Общие",
+          index: 1,
+        },
+        rows: {
+          label: "Строки",
+          index: 2,
+        },
+      },
+    },
+    "app.MyTableLogic": {
+      inputs: {
+        "attrs/headerLabel/text": {
+          label: "Name",
+          type: "text",
+          group: "settings",
+        },
+        columns: {
+          label: "Columns",
+          type: "list",
+          addButtonLabel: "Add Column",
+          removeButtonLabel: "Remove Column",
+          group: "rows",
+          item: {
+            type: "object",
+            properties: {
+              name: {
+                label: "Name",
+                type: "text",
               },
             },
           },

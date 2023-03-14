@@ -497,6 +497,10 @@ button.joint-widget.joint-theme-modern {
   top: 0;
 }
 
+.joint-inspector.joint-theme-modern .list-item {
+  padding-right: 0;
+}
+
 // Toolbar
 
 .toolbar-container {
@@ -714,4 +718,25 @@ div.joint-toolbar .joint-toolbar-group {
   height: 7px;
   margin: 0;
   transform: translate(60%, 60%);
+}
+
+.joint-halo.joint-theme-modern .box {
+  background: #32343f;
+  font-size: 10px;
+  font-weight: 500;
+  color: #fff;
+}
+
+.joint-free-transform.joint-theme-modern {
+  border: 1px solid #f4f4fc;
+}
+
+.joint-free-transform.joint-theme-modern .resize,
+.joint-free-transform.joint-theme-modern .rotate {
+  background: #989fb7;
+}
+
+.joint-highlight-stroke {
+  stroke: #f1554c;
+  stroke-width: 2;
 }
