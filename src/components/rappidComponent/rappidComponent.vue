@@ -980,37 +980,6 @@ export default {
           router: {
             name: "metro",
           },
-          validateConnection: function (
-            cellViewS,
-            magnetS,
-            cellViewT,
-            magnetT,
-            end,
-            linkView
-          ) {
-            // Проверяем, является ли начальная ячейка ячейкой HeaderedRecord
-            if (
-              cellViewS.model instanceof joint.shapes.standard.HeaderedRecord
-            ) {
-              // Проверяем, что магнитная точка находится справа от ячейки
-              if (magnetS.getAttribute("port") === "right") {
-                // Если магнитная точка находится на правой стороне элемента, то разрешаем соединение
-                return true;
-              }
-            }
-            // Проверяем, является ли конечная ячейка ячейкой HeaderedRecord
-            if (
-              cellViewT.model instanceof joint.shapes.standard.HeaderedRecord
-            ) {
-              // Проверяем, что магнитная точка находится слева от ячейки
-              if (magnetT.getAttribute("port") === "left") {
-                // Если магнитная точка находится на левой стороне элемента, то разрешаем соединение
-                return true;
-              }
-            }
-            // Если соединение не соответствует условиям, то запрещаем его
-            return false;
-          },
           connector: {
             name: "rounded",
           },

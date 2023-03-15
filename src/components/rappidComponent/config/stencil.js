@@ -156,6 +156,7 @@ let myLink = new Link();
           stroke: "#32343F",
           strokeWidth: 2,
           strokeDasharray: "0",
+          magnet: true,
         },
         label: {
           text: "rect",
@@ -173,6 +174,7 @@ let myLink = new Link();
       paperSize: { width: 200, height: 100 },
       attrs: {
         root: {
+          magnet: true,
           dataTooltip: "Rectangle",
           dataTooltipPosition: "left",
           dataTooltipPositionSelector: ".joint-stencil",
@@ -184,6 +186,7 @@ let myLink = new Link();
           stroke: "#32343F",
           strokeWidth: 2,
           strokeDasharray: "0",
+          magnet: true,
         },
         label: {
           text: "rect",
@@ -201,6 +204,7 @@ let myLink = new Link();
       paperSize: { width: 200, height: 100 },
       attrs: {
         root: {
+          magnet: true,
           dataTooltip: "Ellipse",
           dataTooltipPosition: "left",
           dataTooltipPositionSelector: ".joint-stencil",
@@ -212,6 +216,7 @@ let myLink = new Link();
           stroke: "#32343F",
           strokeWidth: 2,
           strokeDasharray: "0",
+          magnet: true,
         },
         label: {
           text: "ellipse",
@@ -240,6 +245,7 @@ let myLink = new Link();
           stroke: "#32343F",
           strokeWidth: 2,
           strokeDasharray: "0",
+          magnet: true,
         },
         label: {
           text: "rhombus",
