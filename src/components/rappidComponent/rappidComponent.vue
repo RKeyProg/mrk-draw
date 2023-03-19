@@ -83,7 +83,7 @@ export default {
         $(".toolbar__btn_print").click(() => {
           paper.print();
         });
-      }, 100);
+      }, 600);
     },
     main() {
       App.MainView = joint.mvc.View.extend({
@@ -649,7 +649,7 @@ export default {
           //   $(".toolbar__btn_print").click(() => {
           //     this.paper.print();
           //   });
-          // }, 100);
+          // }, 1000);
         },
 
         applyOnSelection: function (method) {
@@ -1378,6 +1378,8 @@ export default {
           $("#stencil__container").append(stencil.el);
           stencil.render().load(App.config.stencil.shapes);
         }, 600);
+      } else {
+        this.isExport();
       }
     },
   },
