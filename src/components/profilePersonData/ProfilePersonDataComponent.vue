@@ -4,20 +4,19 @@
     .person__content
       base-avatar.person__avatar
       .person__data
-        div 
-          h3 Радкевич Анна Сергеевна
+        div
+          h3 {{ personalData.name }}
         div
           span Почта:
-          span anna_radk@mail.ru
+          span {{ personalData.email }}
         div
           span Телефон:
-          span +375292799704
+          span {{ personalData.phone_number }}
     .person__settings
       base-button.person__btn(
         customType="transparent",
-        @handleClick="isDataProfileEditing = true"
+        @handleClick="changePersonalData"
       ) Редактировать профиль
-      base-button.person__btn(customType="transparent") Изменить пароль
   .person(v-else)
     .person__content
       label(:class="['person__avatar_editing', { hovered: avatarIsHovered }]")
@@ -25,25 +24,37 @@
           @dragover.prevent="avatarIsHovered = true",
           @dragleave.prevent="avatarIsHovered = false",
           @dragstart.prevent,
-          @drop.prevent="handleDrop($event.dataTransfer.files[0])"
+          @drop.prevent="setPhoto($event.dataTransfer.files[0])"
         )
-        base-input.person__file(type="file", @handleChange="setUserPhoto")
-      form.person__form
+        base-input.person__file(type="file", @handleChange="setPhoto")
+      form.person__form(@submit.prevent="setPersonData")
         .person__inputs
-          base-input.person__input(placeholder="Фамилия")
-          base-input.person__input(placeholder="Почта")
-          base-input.person__input(placeholder="Телефон")
-        base-button.person__btn.person__btn_editing(
-          customType="fill",
-          @handleClick="setPersonData"
-        ) Сохранить
+          base-input.person__input(
+            placeholder="Имя",
+            v-model="newPersonalData.name"
+          )
+          base-input.person__input(
+            placeholder="Телефон",
+            v-model="newPersonalData.phone_number"
+          )
+          base-input.person__input(
+            placeholder="Новый пароль",
+            type="password",
+            v-model="newPersonalData.password"
+          )
+        .person__buttons
+          base-button.person__btn.person__btn_editing(
+            customType="fill",
+            @handleClick="resetChanges()"
+          ) Отмена
+          base-button.person__btn.person__btn_editing(customType="submit") Сохранить
 </template>
 
 <script>
 import BaseAvatar from "../BaseAvatar";
 import BaseButton from "../BaseButton";
 import BaseInput from "../BaseInput";
-import { mapActions } from "vuex";
+import { mapActions, mapState } from "vuex";
 
 export default {
   name: "profilePersonData",
@@ -52,23 +63,45 @@ export default {
     BaseButton,
     BaseInput,
   },
+
   data() {
     return {
       isDataProfileEditing: false,
       avatarIsHovered: false,
+      newPersonalData: {},
     };
   },
   methods: {
     ...mapActions({
-      setUserPhoto: "user/setUserPhoto",
+      setUserPreview: "user/setUserPreview",
+      editData: "user/editData",
+      renderPhoto: "user/renderPhoto",
     }),
-    handleDrop(file) {
+    setPhoto(file) {
       this.avatarIsHovered = false;
-      this.setUserPhoto(file);
+      this.newPersonalData.photo = file;
+      this.renderPhoto(file);
+    },
+    resetChanges() {
+      this.isDataProfileEditing = false;
+      if (this.personalData.photo) {
+        this.renderPhoto(this.personalData.photo);
+      }
     },
     setPersonData() {
+      this.editData(this.newPersonalData);
       this.isDataProfileEditing = false;
     },
+    changePersonalData() {
+      this.newPersonalData = Object.assign({}, this.personalData);
+      this.newPersonalData.password = "";
+      this.isDataProfileEditing = true;
+    },
+  },
+  computed: {
+    ...mapState("user", {
+      personalData: (state) => state.user,
+    }),
   },
 };
 </script>

@@ -51,9 +51,9 @@ let myLink = new Link();
   App.config.stencil = {};
 
   App.config.stencil.groups = {
-    phisic: { index: 1, label: "Физическая схема" },
-    logic: { index: 2, label: "Логическая схема", closed: true },
-    chen: { index: 3, label: "Нотация Чена", closed: true },
+    phisic: { index: 1, label: "Физическое проектирование" },
+    logic: { index: 2, label: "Логическое проектирование", closed: true },
+    chen: { index: 3, label: "Концептуальное проектирование", closed: true },
   };
 
   App.config.stencil.shapes = {};

@@ -124,6 +124,24 @@ svg {
   object-fit: cover;
 }
 
+.notification {
+  transition: transform 0.5s ease;
+}
+
+.notify-container {
+  position: fixed;
+  z-index: 100;
+  top: 100%;
+  left: 50%;
+  transform: translate(-50%, 200%);
+
+  &.active {
+    .notification {
+      transform: translateY(-300%);
+    }
+  }
+}
+
 .app__container {
   background-color: $bg-gray_dark;
 }

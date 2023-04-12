@@ -3,16 +3,39 @@
   router-view(name="sideBar")
   div(:class="['page', { page__login: routeName }]")
     router-view.page__content
+  div(:class="['notify-container', { active: isTooltipShown }]")
+    .notification
+      notification(
+        :text="tooltipText",
+        :type="tooltipType",
+        @click="hideTooltip"
+      )
 </template>
 
 <script>
 window.alert = console.log; // скрывает сообщение о лицензии
 
+import notification from "./components/notification";
+import { mapState, mapActions } from "vuex";
+
 export default {
+  components: {
+    notification,
+  },
   computed: {
+    ...mapState("tooltips", {
+      isTooltipShown: (state) => state.isShown,
+      tooltipText: (state) => state.text,
+      tooltipType: (state) => state.type,
+    }),
     routeName() {
       return this.$route.name === "login" ? true : false;
     },
+  },
+  methods: {
+    ...mapActions({
+      hideTooltip: "tooltips/hide",
+    }),
   },
 };
 </script>

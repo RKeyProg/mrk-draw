@@ -1,20 +1,29 @@
 <template lang="pug">
 .btn-component
   button.btn.btn_type_fill(
+    v-if="customType === 'submit'",
+    type="submit",
+    :disabled="disabled"
+  )
+    slot
+  button.btn.btn_type_fill(
     v-if="customType === 'fill'",
     @click="$emit('handleClick')",
+    type="button",
     :disabled="disabled"
   )
     slot
   button.btn.btn_type_transparent(
     v-else-if="customType === 'transparent'",
     @click="$emit('handleClick')",
+    type="button",
     :disabled="disabled"
   )
     slot
   button.btn.btn_type_icon(
     v-if="customType === 'icon'",
     @click="$emit('handleClick')",
+    type="button",
     :disabled="disabled"
   )
     base-icon.btn__icon(:name="name")

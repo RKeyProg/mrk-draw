@@ -20,24 +20,6 @@ App.config = App.config || {};
         },
       },
       {
-        name: "fork",
-        position: "ne",
-        events: {
-          pointerdown: "startForking",
-          pointermove: "doFork",
-          pointerup: "stopForking",
-        },
-        attrs: {
-          ".handle": {
-            "data-tooltip-class-name": "small",
-            "data-tooltip":
-              "Click and drag to clone and connect the object in one go",
-            "data-tooltip-position": "left",
-            "data-tooltip-padding": 15,
-          },
-        },
-      },
-      {
         name: "clone",
         position: "se",
         events: {

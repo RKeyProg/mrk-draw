@@ -1,0 +1,38 @@
+.inner-tooltip-container {
+  padding: 22px;
+  background: #0b2361;
+  border-radius: 15px 15px 0 0;
+  border: 1px solid #bdbdbd;
+  border-bottom: 0;
+  min-width: 400px;
+  position: relative;
+  display: flex;
+  justify-content: space-between;
+  color: #fff;
+
+  &.warning {
+    background: #f1554c;
+  }
+
+  &.error {
+    background: #f1554c;
+  }
+
+  & svg {
+    fill: #fff;
+  }
+}
+
+.tooltip__close {
+  flex-shrink: 0;
+  width: 20px;
+  height: 20px;
+  cursor: pointer;
+  margin-left: 20px;
+}
+
+.tooltip__text {
+  font-size: 14px;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+}

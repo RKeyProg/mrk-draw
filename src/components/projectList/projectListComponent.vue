@@ -2,7 +2,7 @@
 .project-list(v-if="projects.length")
   .projects__title
     span Имя файла
-    span Проект
+    span Вид схемы БД
     span Последняя активность
   ul.project__menu(v-for="project in projects", :key="project.id")
     li.project__item

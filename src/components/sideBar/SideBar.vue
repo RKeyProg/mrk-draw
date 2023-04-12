@@ -12,8 +12,12 @@ div(:class="['side-bar__container', { stencil: isShowStencil }]")
         )
           router-link(:to="item.path")
             base-icon.nav__icon(:name="item.name")
-    router-link.side-bar__exit(to="/login")
-      base-icon.side-bar__exit(name="exit") 
+    router-link.side-bar__logout(to="/login")
+      base-button.side-bar__exit(
+        customType="icon",
+        name="exit",
+        @handleClick="logout"
+      )
   section.side-bar.project__toolbar(v-else)
     router-link.side-bar__logo(to="/")
       base-icon.side-bar__logo(name="logo")
@@ -73,6 +77,7 @@ export default {
   methods: {
     ...mapActions({
       changeIsShowStencil: "rappidStore/changeIsShowStencil",
+      logout: "user/logout",
     }),
   },
   computed: {
