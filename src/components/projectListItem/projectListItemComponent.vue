@@ -10,7 +10,7 @@
     .project__preview
       base-icon.project__icon(name="user")
     .project__title {{ project.title }}
-  .project__name {{ project.type }}
+  .project__name {{ project.DBSheme }}
   .project__last-active {{ project.activity }}
 </template>
 

@@ -1,13 +1,13 @@
 <template lang="pug">
 .profile-user
   profile-person-data.profile__person
-  project-list(:projects="projects", editable)
+  project-list(:projects="getProjects", editable)
 </template>
 
 <script>
 import profilePersonData from "../profilePersonData";
 import projectList from "../projectList";
-import { mapState } from "vuex";
+import { mapGetters } from "vuex";
 
 export default {
   components: {
@@ -15,8 +15,8 @@ export default {
     projectList,
   },
   computed: {
-    ...mapState({
-      projects: (state) => state.user.projects,
+    ...mapGetters({
+      getProjects: "user/getProjects",
     }),
   },
 };

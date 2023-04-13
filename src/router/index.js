@@ -61,6 +61,17 @@ router.beforeEach(async (to, from, next) => {
     try {
       const response = await guard.get("/user");
       store.dispatch("user/login", await response.data.user);
+
+      const projects = response.data.projects.map(
+        ({ id, title, DBSheme, activity }) => ({
+          id,
+          title,
+          DBSheme,
+          activity: new Date(activity),
+        })
+      );
+
+      store.dispatch("user/setProjects", await projects);
       next();
     } catch (error) {
       store.dispatch(

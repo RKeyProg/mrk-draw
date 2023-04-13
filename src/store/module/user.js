@@ -2,44 +2,7 @@ const user = {
   namespaced: true,
   state: {
     user: {},
-    projects: [
-      {
-        id: 1,
-        title: "Первая",
-        DBSheme: "Концептуальная",
-        activity: new Date(),
-      },
-      {
-        id: 2,
-        title: "Вторая",
-        DBSheme: "Физическая",
-        activity: new Date(),
-      },
-      {
-        id: 3,
-        title: "Третья",
-        DBSheme: "Логическая",
-        activity: new Date(2023, 3, 11),
-      },
-      {
-        id: 4,
-        title: "Четвертая",
-        DBSheme: "",
-        activity: new Date(),
-      },
-      {
-        id: 5,
-        title: "Пятая",
-        DBSheme: "Дипломная работа",
-        activity: new Date(),
-      },
-      {
-        id: 6,
-        title: "",
-        DBSheme: "Шестая",
-        activity: new Date(),
-      },
-    ],
+    projects: [],
     preview: "",
   },
   mutations: {
@@ -54,8 +17,8 @@ const user = {
     REMOVE_PROGECT(state, projectId) {
       state.projects = state.projects.filter((item) => item.id !== projectId);
     },
-    ADD_PROJECT(state, project) {
-      state.projects.push(project);
+    SET_PROJECTS(state, projects) {
+      state.projects = projects;
     },
   },
   getters: {
@@ -71,37 +34,34 @@ const user = {
       return userObjIsEmpty === false;
     },
     getProjects: (state) => {
-      state.projects.filter((item) => {
+      return state.projects.map((item) => {
+        let activity = item.activity;
         let thisDay = new Date();
-        let calculateDay = Math.floor((thisDay - item.activity) / 86400000);
+
+        let calculateDay = Math.floor((thisDay - activity) / 86400000);
         if (calculateDay < 1) {
-          item.activity = "Сегодня";
+          activity = "Сегодня";
         } else if (calculateDay === 1) {
-          item.activity = `${calculateDay} день назад`;
+          activity = `${calculateDay} день назад`;
         } else if (
           (calculateDay % 10 === 2 ||
             calculateDay % 10 === 3 ||
             calculateDay % 10 === 4) &&
           (calculateDay < 12 || calculateDay > 14)
         ) {
-          item.activity = `${calculateDay} дня назад`;
+          activity = `${calculateDay} дня назад`;
         } else {
-          item.activity = `${calculateDay} дней назад`;
+          activity = `${calculateDay} дней назад`;
         }
+
+        const newItem = { ...item, activity };
+        return newItem;
       });
-      console.log(state.project);
-      return state.projects;
     },
   },
   actions: {
-    addProject({ commit, state }, project) {
-      let newProject = {
-        id: state.projects.length + 1,
-        title: project.title,
-        DBSheme: project.DBSheme,
-        activity: new Date(),
-      };
-      commit("ADD_PROJECT", newProject);
+    setProjects({ commit }, projects) {
+      commit("SET_PROJECTS", projects);
     },
     removeProject({ commit }, projectId) {
       commit("REMOVE_PROGECT", projectId);
@@ -118,7 +78,7 @@ const user = {
       localStorage.removeItem("token");
       commit("REMOVE_USER");
     },
-    async login({ commit, dispatch }, user) {
+    login({ commit, dispatch }, user) {
       if (!user.name) {
         user.name = "Имя пользователя";
       }
@@ -172,6 +132,46 @@ const user = {
         );
 
         commit("SET_USER", response.data.user);
+      } catch (error) {
+        dispatch(
+          "tooltips/show",
+          {
+            text: error.response.data.message,
+            type: "error",
+          },
+          { root: true }
+        );
+      }
+    },
+    async addProject({ commit, state, dispatch }, project) {
+      let newProject = {
+        title: project.title,
+        DBSheme: project.DBSheme,
+        activity: new Date(),
+      };
+
+      try {
+        const response = await this.$axios.post("/addProject", newProject);
+
+        dispatch(
+          "tooltips/show",
+          {
+            text: response.data.message,
+            type: "success",
+          },
+          { root: true }
+        );
+
+        const projects = response.data.projects.map(
+          ({ id, title, DBSheme, activity }) => ({
+            id,
+            title,
+            DBSheme,
+            activity: new Date(activity),
+          })
+        );
+
+        commit("SET_PROJECTS", projects);
       } catch (error) {
         dispatch(
           "tooltips/show",

@@ -14,7 +14,7 @@
 <script>
 import projectList from "../projectList";
 import mainProjectsNew from "../mainProjectsNew";
-import { mapState } from "vuex";
+import { mapGetters } from "vuex";
 
 export default {
   components: {
@@ -27,34 +27,9 @@ export default {
     };
   },
   computed: {
-    ...mapState({
-      projects: (state) => state.user.projects,
+    ...mapGetters({
+      getProjects: "user/getProjects",
     }),
-    getProjects() {
-      return this.projects.map((item) => {
-        let activity = item.activity;
-        let thisDay = new Date();
-        let calculateDay = Math.floor((thisDay - activity) / 86400000);
-        if (calculateDay < 1) {
-          activity = "Сегодня";
-        } else if (calculateDay === 1) {
-          activity = `${calculateDay} день назад`;
-        } else if (
-          (calculateDay % 10 === 2 ||
-            calculateDay % 10 === 3 ||
-            calculateDay % 10 === 4) &&
-          (calculateDay < 12 || calculateDay > 14)
-        ) {
-          activity = `${calculateDay} дня назад`;
-        } else {
-          activity = `${calculateDay} дней назад`;
-        }
-
-        // создаем новый объект с помощью оператора spread
-        const newItem = { ...item, activity };
-        return newItem;
-      });
-    },
   },
   methods: {
     changeCardView() {

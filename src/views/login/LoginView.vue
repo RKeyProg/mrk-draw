@@ -88,11 +88,21 @@ export default {
     ...mapActions({
       showTooltip: "tooltips/show",
       login: "user/login",
+      setProjects: "user/setProjects",
     }),
     async loginSubmit() {
       try {
         const response = await $axios.post("/login", this.loginUser);
         this.login(response.data.user);
+        const projects = response.data.projects.map(
+          ({ id, title, DBSheme, activity }) => ({
+            id,
+            title,
+            DBSheme,
+            activity: new Date(activity),
+          })
+        );
+        this.setProjects(projects);
 
         const token = response.data.token;
         localStorage.setItem("token", token);
