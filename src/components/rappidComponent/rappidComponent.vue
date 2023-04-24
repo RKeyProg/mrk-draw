@@ -47,6 +47,7 @@ let paper;
 let paperScroller;
 let stencil;
 let graph;
+let rappid;
 
 import { mapState, mapActions } from "vuex";
 
@@ -63,14 +64,16 @@ export default {
     this.isExport();
 
     joint.setTheme("modern");
-    const rappid = new App.MainView({ el: this.$el });
-    // rappid.graph.fromJSON(
-    //   JSON.parse(App.config.sampleGraphs.emergencyProcedure)
-    // );
+    rappid = new App.MainView({ el: this.$el });
+
+    if (this.currentProject.json) {
+      rappid.graph.fromJSON(JSON.parse(this.currentProject.json));
+    }
   },
   methods: {
     ...mapActions({
       changeIsShowStencil: "rappidStore/changeIsShowStencil",
+      saveProject: "user/saveProject",
     }),
     isExport() {
       setTimeout(() => {
@@ -977,6 +980,14 @@ export default {
       joint.shapes.standard.Link.define(
         "app.Link",
         {
+          source: {
+            id: "",
+            magnet: "",
+          },
+          target: {
+            id: "",
+            magnet: "item",
+          },
           router: {
             name: "metro",
           },
@@ -1004,6 +1015,11 @@ export default {
                 type: "path",
                 d: "M 0 0 0 0",
                 stroke: "#32343F",
+              },
+              source: {
+                id: "",
+                selector: "",
+                port: "",
               },
             },
           },
@@ -1071,8 +1087,8 @@ export default {
           {
             type: "app.MyTable",
             columns: [
-              { name: "id", type: "int", key: true },
-              { name: "name", type: "varchar" },
+              { id: "row1", name: "id", type: "int", key: true },
+              { id: "row2", name: "name", type: "varchar" },
             ],
             padding: { top: 40, bottom: 10, left: 10, right: 10 },
             itemMinLabelWidth: 20,
@@ -1137,7 +1153,6 @@ export default {
           },
           joint.shapes.standard.HeaderedRecord.prototype.defaults
         ),
-
         preinitialize: function () {
           this.markup = [
             {
@@ -1154,55 +1169,45 @@ export default {
             },
           ];
         },
-
         initialize: function (...args) {
-          joint.shapes.standard.HeaderedRecord.prototype.initialize.apply(
+          joint.shapes.standard.HeaderedRecord.prototype.initialize.call(
             this,
             ...args
           );
           this.on("change", () => this.onColumnsChange());
           this._setColumns(this.get("columns"));
         },
-
         onColumnsChange: function () {
           if (this.hasChanged("columns")) {
             this._setColumns(this.get("columns"));
           }
         },
-
         setName: function (name, opt) {
           return this.attr(["headerLabel", "text"], name, opt);
         },
-
         getName: function () {
           return this.attr(["headerLabel", "text"]);
         },
-
         setColumns: function (data) {
           this.set("columns", data);
           return this;
         },
-
         toJSON: function () {
           const json =
             joint.shapes.standard.HeaderedRecord.prototype.toJSON.call(this);
           delete json.items;
           return json;
         },
-
         _setColumns: function (data = []) {
           const names = [];
           const values = [];
-
           data.forEach((item, i) => {
             if (!item.name) return;
-
             names.push({
               id: item.name,
               label: item.name,
               span: 2,
             });
-
             const value = {
               id: `${item.type}_${i}`,
               label: item.type,
@@ -1215,10 +1220,8 @@ export default {
             }
             values.push(value);
           });
-
           this.set("items", [names, values]);
           this.removeInvalidLinks();
-
           return this;
         },
       });
@@ -1311,7 +1314,7 @@ export default {
           },
 
           initialize: function (...args) {
-            joint.shapes.standard.HeaderedRecord.prototype.initialize.apply(
+            joint.shapes.standard.HeaderedRecord.prototype.initialize.call(
               this,
               ...args
             );
@@ -1369,6 +1372,8 @@ export default {
   computed: {
     ...mapState({
       isShowStencil: (state) => state.rappidStore.isShowStencil,
+      projectSave: (state) => state.user.currentProjectSave,
+      currentProject: (state) => state.user.currentProject,
     }),
   },
   watch: {
@@ -1384,6 +1389,12 @@ export default {
     },
   },
   beforeUnmount() {
+    const currentProject = {
+      id: this.currentProject.id,
+      json: JSON.stringify(rappid.graph.toJSON()),
+    };
+    this.saveProject(currentProject);
+
     $(".paper-container").children().remove();
     $(".inspector-container").children().remove();
     $(".navigator-container").children().remove();

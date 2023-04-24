@@ -31,26 +31,30 @@
         .person__inputs
           base-input.person__input(
             placeholder="Имя",
-            v-model="newPersonalData.name"
+            v-model="newPersonalData.name",
+            :error="validation.firstError('newPersonalData.name')"
           )
           base-input.person__input(
             placeholder="Телефон",
-            v-model="newPersonalData.phone_number"
+            v-model="newPersonalData.phone_number",
+            :error="validation.firstError('newPersonalData.phone_number')"
           )
           base-input.person__input(
             placeholder="Новый пароль",
             type="password",
-            v-model="newPersonalData.password"
+            v-model="newPersonalData.password",
+            :error="validation.firstError('newPersonalData.password')"
           )
         .person__buttons
+          base-button.person__btn.person__btn_editing(customType="submit") Сохранить
           base-button.person__btn.person__btn_editing(
             customType="fill",
             @handleClick="resetChanges()"
           ) Отмена
-          base-button.person__btn.person__btn_editing(customType="submit") Сохранить
 </template>
 
 <script>
+import { Validator } from "simple-vue-validator";
 import BaseAvatar from "../BaseAvatar";
 import BaseButton from "../BaseButton";
 import BaseInput from "../BaseInput";
@@ -63,7 +67,23 @@ export default {
     BaseButton,
     BaseInput,
   },
-
+  mixins: [require("simple-vue-validator").mixin],
+  validators: {
+    "newPersonalData.name"(value) {
+      return Validator.value(value).required("Введите имя");
+    },
+    "newPersonalData.phone_number"(value) {
+      return Validator.value(value)
+        .required("Введите телефон")
+        .regex(
+          /^(\+375|80)(25|29|33|44)(\d{3})(\d{2})(\d{2})$/,
+          "Некорректный формат телефона"
+        );
+    },
+    "newPersonalData.password"(value) {
+      return Validator.value(value).minLength(6, "Минимум 6 символов");
+    },
+  },
   data() {
     return {
       isDataProfileEditing: false,
@@ -88,8 +108,20 @@ export default {
         this.renderPhoto(this.personalData.photo);
       }
     },
-    setPersonData() {
-      this.editData(this.newPersonalData);
+    async setPersonData() {
+      if ((await this.$validate()) === false) return;
+
+      if (!this.newPersonalData.password) {
+        this.newPersonalData.password = this.personalData.password;
+      }
+
+      if (
+        JSON.stringify(this.newPersonalData) !==
+        JSON.stringify(this.personalData)
+      ) {
+        this.editData(this.newPersonalData);
+      }
+
       this.isDataProfileEditing = false;
     },
     changePersonalData() {

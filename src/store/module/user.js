@@ -4,6 +4,10 @@ const user = {
     user: {},
     projects: [],
     preview: "",
+    currentProject: {
+      id: 0,
+      json: {},
+    },
   },
   mutations: {
     SET_USER: (state, user) => (state.user = user),
@@ -19,6 +23,12 @@ const user = {
     },
     SET_PROJECTS(state, projects) {
       state.projects = projects;
+    },
+    SET_CURRENT_PROJECT(state, currentProject) {
+      state.currentProject = currentProject;
+    },
+    UNSET_CURRENT_PROJECT(state) {
+      state.currentProjectJson = {};
     },
   },
   getters: {
@@ -62,9 +72,6 @@ const user = {
   actions: {
     setProjects({ commit }, projects) {
       commit("SET_PROJECTS", projects);
-    },
-    removeProject({ commit }, projectId) {
-      commit("REMOVE_PROGECT", projectId);
     },
     renderPhoto({ commit }, photo) {
       const reader = new FileReader();
@@ -143,7 +150,7 @@ const user = {
         );
       }
     },
-    async addProject({ commit, state, dispatch }, project) {
+    async addProject({ commit, dispatch }, project) {
       let newProject = {
         title: project.title,
         DBSheme: project.DBSheme,
@@ -172,6 +179,63 @@ const user = {
         );
 
         commit("SET_PROJECTS", projects);
+      } catch (error) {
+        dispatch(
+          "tooltips/show",
+          {
+            text: error.response.data.message,
+            type: "error",
+          },
+          { root: true }
+        );
+      }
+    },
+    async removeProject({ commit, dispatch }, projectId) {
+      try {
+        const response = await this.$axios.post("/removeProject", {
+          projectId,
+        });
+
+        dispatch(
+          "tooltips/show",
+          {
+            text: response.data.message,
+            type: "success",
+          },
+          { root: true }
+        );
+
+        commit("REMOVE_PROGECT", projectId);
+      } catch (error) {
+        dispatch(
+          "tooltips/show",
+          {
+            text: error.response.data.message,
+            type: "error",
+          },
+          { root: true }
+        );
+      }
+    },
+    setCurrentProject({ commit }, currentProject) {
+      commit("SET_CURRENT_PROJECT", currentProject);
+    },
+    async saveProject({ commit, dispatch }, currentProject) {
+      try {
+        const response = await this.$axios.post("/saveProject", {
+          currentProject,
+        });
+
+        dispatch(
+          "tooltips/show",
+          {
+            text: response.data.message,
+            type: "success",
+          },
+          { root: true }
+        );
+
+        commit("UNSET_CURRENT_PROJECT");
       } catch (error) {
         dispatch(
           "tooltips/show",
