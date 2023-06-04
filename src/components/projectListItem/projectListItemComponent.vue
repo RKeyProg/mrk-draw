@@ -6,12 +6,12 @@
     name="trash",
     @click.prevent="removeExistedProject"
   )
+  .project__preview
+    base-icon.project__icon(name="user")
   .project__file
-    .project__preview
-      base-icon.project__icon(name="user")
     .project__title {{ project.title }}
-  .project__name {{ project.DBSheme }}
-  .project__last-active {{ project.activity }}
+    .project__name {{ project.DBSheme }}
+    .project__last-active {{ project.activity }}
 </template>
 
 <script>

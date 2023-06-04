@@ -9,7 +9,6 @@
 <script>
 import sectionTitle from "./../../components/sectionTitle";
 import profileUser from "./../../components/profileUser";
-import profilePrivacy from "./../../components/profilePrivacy";
 import { mapState } from "vuex";
 
 export default {
@@ -17,7 +16,6 @@ export default {
   components: {
     sectionTitle,
     profileUser,
-    profilePrivacy,
   },
   computed: {
     ...mapState({

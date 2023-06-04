@@ -9,7 +9,7 @@
 <script>
 import sectionTitle from "../../components/sectionTitle";
 import mainProjects from "../../components/mainProjects";
-import mainSettings from "../../components/mainSettings";
+import mainTheory from "../../components/mainTheory";
 import mainTrash from "../../components/mainTrash";
 import { mapState } from "vuex";
 
@@ -17,7 +17,7 @@ export default {
   components: {
     sectionTitle,
     mainProjects,
-    mainSettings,
+    mainTheory,
     mainTrash,
   },
   computed: {

@@ -97,6 +97,15 @@ h2 {
   line-height: 41px;
   letter-spacing: 0.1em;
   color: #32343f;
+  flex: 1А;
+
+  @include desktop {
+    font-size: 18px;
+  }
+
+  @include tablets {
+    font-size: 16px;
+  }
 }
 
 p {
@@ -148,6 +157,10 @@ svg {
 
 .section__healine {
   margin-bottom: 65px;
+
+  @include tablets {
+    margin-bottom: 45px;
+  }
 }
 
 .section__container {

@@ -1,3 +1,5 @@
+@import "../../mixins.scss";
+
 .project__item {
   position: relative;
   display: flex;
@@ -16,6 +18,7 @@
 .projects__title {
   padding: 0 5px;
   display: grid;
+  margin-left: 55px;
   grid-template-columns: 1.7fr 1fr 1fr;
   font-weight: 700;
   font-size: 12px;
@@ -26,6 +29,15 @@
 
   & span:last-child {
     justify-self: flex-end;
+  }
+
+  @include desktop {
+    margin-left: 45px;
+    grid-template-columns: 0.85fr 0.6fr 0.9fr;
+  }
+
+  @include tablets {
+    display: none;
   }
 }
 

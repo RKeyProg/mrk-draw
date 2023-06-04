@@ -41,6 +41,8 @@ export default {
 </script>
 
 <style lang="scss">
+@import "./mixins.scss";
+
 #app {
   width: 100%;
   height: 100%;
@@ -61,6 +63,10 @@ export default {
   overflow: hidden;
   padding: 35px;
   padding-top: 20px;
+
+  @include desktop {
+    padding: 20px;
+  }
 
   &::before {
     content: "";

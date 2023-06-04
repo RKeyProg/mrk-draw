@@ -1,3 +1,4 @@
+import { createManager } from "@vue-youtube/core";
 import { createApp } from "vue";
 import App from "./App.vue";
 import router from "./router";
@@ -6,4 +7,4 @@ import $axios from "./request.js";
 
 store.$axios = $axios;
 
-createApp(App).use(store).use(router).mount("#app");
+createApp(App).use(createManager()).use(store).use(router).mount("#app");

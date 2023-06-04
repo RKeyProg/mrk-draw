@@ -27,6 +27,14 @@
     :disabled="disabled"
   )
     base-icon.btn__icon(:name="name")
+  button.btn.btn_type_file(
+    v-if="customType === 'file'",
+    @click="$emit('handleClick')",
+    type="button",
+    :disabled="disabled"
+  )
+    base-icon.btn__icon(name="file")
+    slot
 </template>
 
 <script>

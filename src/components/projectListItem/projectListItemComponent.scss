@@ -1,7 +1,8 @@
+@import "../../mixins.scss";
+
 .project-item {
   width: 100%;
-  display: grid;
-  grid-template-columns: 1.7fr 1fr 1fr;
+  display: flex;
   align-items: center;
   font-weight: 700;
   font-size: 12px;
@@ -15,11 +16,28 @@
       left: -35px;
     }
   }
+
+  @include tablets {
+    flex-direction: column;
+  }
 }
 
 .project__file {
-  display: flex;
-  align-items: center;
+  flex: 1;
+  display: grid;
+  grid-template-columns: 1.7fr 1fr 1fr;
+
+  @include desktop {
+    grid-template-columns: 0.85fr 0.6fr 0.9fr;
+  }
+
+  @include tablets {
+    font-size: 1.5rem;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    width: 100%;
+    justify-items: center;
+    grid-row-gap: 1rem;
+  }
 }
 
 .project__preview {
@@ -33,6 +51,17 @@
   margin-right: 20px;
   position: relative;
   z-index: 20;
+
+  @include desktop {
+    margin-right: 10px;
+  }
+
+  @include tablets {
+    margin-right: 0;
+    margin-bottom: 1rem;
+    width: 50px;
+    height: 50px;
+  }
 }
 
 .project__icon {
@@ -42,6 +71,10 @@
 
 .project__last-active {
   justify-self: flex-end;
+
+  @include tablets {
+    justify-self: auto;
+  }
 }
 
 .project__remove {
@@ -52,4 +85,8 @@
   overflow: hidden;
   transition: left 0.5s ease;
   z-index: 1;
+
+  @include tablets {
+    display: none;
+  }
 }

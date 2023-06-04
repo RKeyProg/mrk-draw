@@ -1,7 +1,7 @@
 import axios from "axios";
 import router from "./router";
 
-axios.defaults.baseURL = "http://localhost:3000";
+axios.defaults.baseURL = "http://31.214.141.53:3000";
 
 const token = localStorage.getItem("token");
 

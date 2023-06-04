@@ -8,12 +8,6 @@ const profile = {
         active: true,
         component: "profileUser",
       },
-      {
-        id: 2,
-        title: "Приватность",
-        active: false,
-        component: "profilePrivacy",
-      },
     ],
     currentComponent: "profileUser",
   },

@@ -4,7 +4,7 @@
     .toolbar-container
   .app-body
     .paper-container
-    .ispector__wrap
+    .inspector__wrap
       .inspector-container
       .navigator-container
 </template>
@@ -66,7 +66,7 @@ export default {
     joint.setTheme("modern");
     rappid = new App.MainView({ el: this.$el });
 
-    if (this.currentProject.json) {
+    if (this.currentProject.json.length > 100) {
       rappid.graph.fromJSON(JSON.parse(this.currentProject.json));
     }
   },
@@ -467,7 +467,11 @@ export default {
           joint.ui.Halo.clear(paper);
           joint.ui.FreeTransform.clear(paper);
           joint.ui.Inspector.close();
+          const inspector = document.querySelector(".inspector__wrap");
+          const navigator = document.querySelector(".navigator-container");
           if (collection.length === 1) {
+            inspector.classList.add("show");
+            navigator.classList.add("show");
             var primaryCell = collection.first();
             var primaryCellView = paper.findViewByModel(primaryCell);
             selection.destroySelectionBox(primaryCell);
@@ -476,6 +480,9 @@ export default {
             collection.each(function (cell) {
               selection.createSelectionBox(cell);
             });
+          } else if (collection.length === 0) {
+            inspector.classList.remove("show");
+            navigator.classList.remove("show");
           }
         },
 

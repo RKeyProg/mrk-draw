@@ -46,7 +46,7 @@ const router = createRouter({
 });
 
 const guard = axios.create({
-  baseURL: "http://localhost:3000",
+  baseURL: "http://31.214.141.53:3000",
 });
 
 router.beforeEach(async (to, from, next) => {

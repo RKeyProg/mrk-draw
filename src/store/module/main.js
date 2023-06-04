@@ -10,15 +10,9 @@ const main = {
       },
       {
         id: 2,
-        title: "Настройки",
+        title: "Теория",
         active: false,
-        component: "mainSettings",
-      },
-      {
-        id: 3,
-        title: "Корзина",
-        active: false,
-        component: "mainTrash",
+        component: "mainTheory",
       },
     ],
     currentComponent: "mainProjects",

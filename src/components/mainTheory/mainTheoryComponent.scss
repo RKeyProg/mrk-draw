@@ -1,0 +1,25 @@
+@import "../../mixins.scss";
+
+.video {
+  margin: 0 auto;
+  width: 40%;
+  max-width: 1280px;
+  height: 20vw;
+  margin-bottom: 5rem;
+
+  @include tablets {
+    width: 70%;
+    height: 50vw;
+  }
+}
+
+.files {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 2rem;
+
+  @include tablets {
+    justify-content: flex-start;
+  }
+}
